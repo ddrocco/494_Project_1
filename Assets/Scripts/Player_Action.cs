@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Player_Action : MonoBehaviour {
 	public int currency;
 
-	public float xMaxSpeed = .15f;
+	public float xMaxSpeed = .10f;
 	public float vSpeed;
 	public float xSpeed;
 	public Player_Fall_Handler fallHandler;
@@ -56,7 +56,7 @@ public class Player_Action : MonoBehaviour {
 			if (!faceUp) {
 				bool no_collisions = true;
 				foreach (Collider cld in bumpHandler.blocksAdjacent) {
-					if (cld.transform.position.x > transform.position.x && cld.tag != "JumpThrough") {
+					if (cld.transform.position.x > transform.position.x && cld.gameObject.layer != Layerdefs.blockThin) {
 						no_collisions = false;
 						transform.Translate (Vector3.right * (cld.gameObject.transform.position.x
                       				- blockOffsetLR - transform.position.x));
@@ -74,7 +74,7 @@ public class Player_Action : MonoBehaviour {
 			if (!faceUp) {
 				bool no_collisions = true;
 				foreach (Collider cld in bumpHandler.blocksAdjacent) {
-					if (cld.transform.position.x < transform.position.x && cld.tag != "JumpThrough") {
+					if (cld.transform.position.x < transform.position.x && cld.gameObject.layer != Layerdefs.blockThin) {
 						no_collisions = false;
 						transform.Translate (Vector3.right * (cld.gameObject.transform.position.x
                      				+ blockOffsetLR - transform.position.x));
@@ -124,7 +124,7 @@ public class Player_Action : MonoBehaviour {
 		}
 		//Falling on blocks:
 		if (fallHandler.blocksBeneath.Contains(other)
-					&& (other.gameObject.layer == Layerdefs.blockThin
+					&& (other.gameObject.layer != Layerdefs.blockThin
 					|| faceDown == false)) {
 			transform.position += Vector3.up * (other.gameObject.transform.position.y
 						+ 0.51f + transform.localScale.y / 2 - transform.position.y);
@@ -133,7 +133,7 @@ public class Player_Action : MonoBehaviour {
 			}
 		}
 		
-		if (other.tag == "JumpThrough") {
+		if (other.gameObject.layer == Layerdefs.blockThin) {
 			return;
 		}
 		
@@ -169,7 +169,7 @@ public class Player_Action : MonoBehaviour {
 	}
 	
 	void UpdateHitControl() {
-		if (++timeSinceHit == invulnTime) {
+		if (++timeSinceHit >= invulnTime) {
 			invulnerable = false;
 			renderer.material.color = Color.white;
 		} else if (timeSinceHit % 2 != 0) {

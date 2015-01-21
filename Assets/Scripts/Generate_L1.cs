@@ -98,7 +98,7 @@ public class Generate_L1 : MonoBehaviour {
 		world.Add(new Vector16(2, 0, 0, 0, 0, 0, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6));
 		world.Add(new Vector16(2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 		world.Add(new Vector16(2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-		world.Add(new Vector16(2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0));
+		world.Add(new Vector16(2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0));
 		world.Add(new Vector16(2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 4, 0, 0, 3));
 		world.Add(new Vector16(2, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 0, 3));
 		world.Add(new Vector16(2, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 3));
@@ -178,8 +178,8 @@ public class Generate_L1 : MonoBehaviour {
 		world.Add(new Vector16(0, 0, 2, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 2));
 		world.Add(new Vector16(0, 0, 0, 0, 0, 2, 2, 0, 7, 7, 0, 0, 0, 0, 0, 2));
 		world.Add(new Vector16(0, 0, 0, 0, 0, 2, 4, 4, 4, 4, 0, 0, 0, 0, 0, 2));
-		world.Add(new Vector16(0, 0, 0, 0, 0, 0, 0, 0, 9, 2, 2, 0, 0, 0, 0, 2));
 		world.Add(new Vector16(0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 2));
+		world.Add(new Vector16(0, 0, 0, 0, 0, 0, 0, 0, 9, 2, 2, 0, 0, 0, 0, 2));
 		world.Add(new Vector16(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2));
 		world.Add(new Vector16(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 0));
 		world.Add(new Vector16(0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 0, 2, 2, 0, 0));
