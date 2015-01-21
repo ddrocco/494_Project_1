@@ -30,7 +30,6 @@ public class Generate_L1 : MonoBehaviour {
 	
 	public List<Vector16> world;
 	public List<GameObject> worldBlocks;
-	// Use this for initialization
 	
 	void Awake() {
 		world = new List<Vector16>();

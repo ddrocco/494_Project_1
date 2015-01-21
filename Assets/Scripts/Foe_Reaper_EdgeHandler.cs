@@ -34,4 +34,5 @@ public class Foe_Reaper_EdgeHandler : MonoBehaviour {
 			parent.edgeCollision();
 		}
 	}
+
 }
