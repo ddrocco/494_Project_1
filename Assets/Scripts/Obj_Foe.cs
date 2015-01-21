@@ -20,11 +20,11 @@ public class Obj_Foe : MonoBehaviour {
 	public int timeSinceHit = 0;
 	public bool invulnerable = false;
 
-	void FixedUpdate () {
+	public void FixedUpdate () {
 		if (++timeSinceHit >= invulnTime) {
 			invulnerable = false;
 			renderer.material.color = Color.white;
-		} else if (timeSinceHit % 2 != 0) {
+		} else if (timeSinceHit % 6 > 3) {
 			renderer.material.color = Color.red;
 		} else {
 			renderer.material.color = Color.yellow;
@@ -48,6 +48,9 @@ public class Obj_Foe : MonoBehaviour {
 			}
 			
 			Destroy (this.gameObject);
+		} else {
+			invulnerable = true;
+			timeSinceHit = 0;
 		}
 	}
 	

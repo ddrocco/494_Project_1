@@ -42,6 +42,7 @@ public class Foe_Reaper : Obj_Foe {
 	}
 	
 	void FixedUpdate () {
+		GetComponentInParent<Obj_Foe>().FixedUpdate();
 		if (freakingOut == true) {
 			FreakoutUpdate();
 		} else {
@@ -79,7 +80,7 @@ public class Foe_Reaper : Obj_Foe {
 	}
 	
 	private void FreakoutUpdate() {
-		spawnMonsters();
+		//spawnMonsters();
 		if (++timer >= freakoutPhaseTime) {
 			timer = calmPhaseTime;
 			freakingOut = false;
