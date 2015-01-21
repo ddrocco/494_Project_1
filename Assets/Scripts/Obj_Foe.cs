@@ -20,13 +20,6 @@ public class Obj_Foe : MonoBehaviour {
 	public int timeSinceHit = 0;
 	public bool invulnerable = false;
 
-	/*// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	*/
 	void FixedUpdate () {
 		if (++timeSinceHit >= invulnTime) {
 			invulnerable = false;
@@ -67,4 +60,5 @@ public class Obj_Foe : MonoBehaviour {
 		//Drop item:		
 		//Puff of smoke (should spawn item when smoke clears
 	}
+
 }

@@ -10,7 +10,6 @@ public class Heart_Pickup_Script : MonoBehaviour {
 		value = val;
 	}
 
-	// Use this for initialization
 	void Start () {
 		if (value == 1) {
 			GetComponent<SpriteRenderer>().sprite = fullHeart;
@@ -23,4 +22,5 @@ public class Heart_Pickup_Script : MonoBehaviour {
 			transform.localScale = new Vector3(1f,1f,1f);
 		}
 	}
+
 }
