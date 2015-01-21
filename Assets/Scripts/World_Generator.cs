@@ -30,7 +30,6 @@ public class World_Generator : MonoBehaviour {
 
 	public List<Vector16> world;
 	public List<GameObject> worldBlocks;
-	// Use this for initialization
 	
 	void Awake() {
 		world = new List<Vector16>();
@@ -61,4 +60,5 @@ public class World_Generator : MonoBehaviour {
 		newObject.transform.position = new Vector3(x - 8, y, 0);
 		newObject.transform.parent = transform;
 	}
+
 }
