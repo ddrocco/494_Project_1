@@ -28,7 +28,6 @@ public class Foe_Reaper : Obj_Foe {
 	
 	public float freakoutDistance = 3f;
 
-	// Use this for initialization
 	void Start () {
 		initialXValue = transform.position.x;
 		timer = 0;
@@ -42,7 +41,6 @@ public class Foe_Reaper : Obj_Foe {
 		respawnTimers = new List<int>{respawnTime, respawnTime, respawnTime, respawnTime};
 	}
 	
-	// Update is called once per frame
 	void FixedUpdate () {
 		if (freakingOut == true) {
 			FreakoutUpdate();
@@ -175,4 +173,5 @@ public class Foe_Reaper : Obj_Foe {
 			}
 		}
 	}
+
 }

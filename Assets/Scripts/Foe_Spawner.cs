@@ -15,7 +15,6 @@ public class Foe_Spawner : MonoBehaviour {
 	public List<int> respawnTimers;
 	public int respawnTime = 600;
 	
-	// Use this for initialization
 	void Start () {
 		player = FindObjectOfType<Player_Shoot>();
 		timer = 40;
@@ -51,4 +50,5 @@ public class Foe_Spawner : MonoBehaviour {
 			}
 		}
 	}
+
 }
