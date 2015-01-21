@@ -7,7 +7,6 @@ public class Arrow_Action : MonoBehaviour {
 	private float timer = 0f;
 	private Vector3 move;
 
-	// Use this for initialization
 	void Start () {
 		if (Player_Action.faceUp) {
 			transform.localScale = new Vector3 (0.25f, 0.75f, 0.25f);
@@ -21,7 +20,6 @@ public class Arrow_Action : MonoBehaviour {
 		}
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		timer += 1.0f * Time.deltaTime;
 		transform.Translate (move);
@@ -39,4 +37,5 @@ public class Arrow_Action : MonoBehaviour {
 	void OnDestroy() {
 		Player_Shoot.shotArrow = false;
 	}
+
 }
