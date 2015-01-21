@@ -115,7 +115,7 @@ public class Player_Action : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter (Collider other) {
-		if (other.gameObject.layer == 9) { //Collectible
+		if (other.gameObject.layer == Layerdefs.collectible) { //Collectible
 			Heart_Pickup_Script collected = other.gameObject.GetComponent<Heart_Pickup_Script>();
 			currency += collected.value;
 			Destroy(other.gameObject);
@@ -124,7 +124,7 @@ public class Player_Action : MonoBehaviour {
 		}
 		//Falling on blocks:
 		if (fallHandler.blocksBeneath.Contains(other)
-					&& (other.tag != "JumpThrough"
+					&& (other.gameObject.layer == Layerdefs.blockThin
 					|| faceDown == false)) {
 			transform.position += Vector3.up * (other.gameObject.transform.position.y
 						+ 0.51f + transform.localScale.y / 2 - transform.position.y);

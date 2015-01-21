@@ -37,9 +37,9 @@ public class Foe_Dragon : Obj_Foe {
 	}
 	
 	void OnTriggerEnter (Collider other) { //Turn around or stop falling and face player
-		if (other.gameObject.layer == 10) { //Player
+		if (other.gameObject.layer == Layerdefs.pit) { //Player
 			other.GetComponent<Player_Action>().HitByEnemy();
-		} else if (other.gameObject.layer == 13) { //Arrow
+		} else if (other.gameObject.layer == Layerdefs.projectile) { //Arrow
 			GameObject.Destroy(other.gameObject);
 			HitByArrow();
 		} else if (collidedSinceLastUpdate == false) {

@@ -121,7 +121,7 @@ public class Foe_Reaper : Obj_Foe {
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		if (other.gameObject.layer == 13) { //Arrow
+		if (other.gameObject.layer == Layerdefs.projectile) { //Arrow
 			GameObject.Destroy(other.gameObject);
 			HitByArrow();
 			return;
