@@ -11,13 +11,13 @@ public class Player_Fall_Handler : MonoBehaviour {
 	public JumpState jumpState;
 	public bool buttonHeld;
 	public int jumpTimeMin = 10; //in steps
-	public int jumpTimeMax = 18; //in steps
+	public int jumpTimeMax = 16; //in steps
 	public int floatTime = 15; //in steps
 	public int currentTime;
-	public float jumpSpeed = 0.2f;
-	public float floatSpeed = 0.05f;
+	public float jumpSpeed = 0.21f;
+	public float floatSpeed = 0.025f;
 	public float floatGravity = 0.005f;
-	public float fallGravity = 0.15f;
+	public float fallGravity = 0.3f;
 	public float maxFallSpeed = 0.15f;
 	public Player_Action parent;
 	public List<Collider> blocksBeneath;
