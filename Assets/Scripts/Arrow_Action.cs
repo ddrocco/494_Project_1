@@ -21,6 +21,11 @@ public class Arrow_Action : MonoBehaviour {
 	}
 	
 	void Update () {
+		Vector3 screenBottomLeft = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0));
+		Vector3 screenTopRight = Camera.main.ViewportToWorldPoint (new Vector3 (1, 1, 0));
+		if (transform.position.x < screenBottomLeft.x || transform.position.x > screenTopRight.x) {
+			GameObject.Destroy (this.gameObject);
+		}
 		timer += 1.0f * Time.deltaTime;
 		transform.Translate (move);
 		if (timer >= lifeTime) {

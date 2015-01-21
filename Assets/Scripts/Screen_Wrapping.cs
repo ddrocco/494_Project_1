@@ -9,7 +9,6 @@ public class Screen_Wrapping : MonoBehaviour {
 	private Vector3 screenBottomLeft;
 	private Vector3 screenTopRight;
 
-	// Use this for initialization
 	void Start () {
 		renderers = GetComponentsInChildren<Renderer>();
 		screenBottomLeft = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0));
@@ -79,7 +78,6 @@ public class Screen_Wrapping : MonoBehaviour {
 	}
 	
 
-	// Update is called once per frame
 	void Update () {
 		ScreenWrap ();
 		if (transform.position.x < screenBottomLeft.x || transform.position.x > screenTopRight.x) {
