@@ -24,4 +24,5 @@ public class Foe_Dragon_Fall_Handler : MonoBehaviour {
 			parent.facePlayer();
 		}
 	}
+
 }

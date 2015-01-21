@@ -101,4 +101,5 @@ public class Foe_Dragon : Obj_Foe {
 			facing = direction.right;
 		}
 	}
+
 }
