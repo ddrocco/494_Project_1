@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class Arrow_Action : MonoBehaviour {
-	public float lifeTime = 0.5f;
-	public float speed = 1;
+	public float lifeTime = 0.3f;
+	public float speed = 0.3f;
 	private float timer = 0f;
 	private Vector3 move;
 
@@ -29,7 +29,7 @@ public class Arrow_Action : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		if (other.gameObject.layer == 9) {
+		if (other.gameObject.layer == Layerdefs.blockThick) {
 			GameObject.Destroy(this.gameObject);
 		}
 	}

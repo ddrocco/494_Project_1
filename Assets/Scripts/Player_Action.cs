@@ -169,7 +169,7 @@ public class Player_Action : MonoBehaviour {
 	}
 	
 	void UpdateHitControl() {
-		if (++timeSinceHit == invulnTime) {
+		if (++timeSinceHit >= invulnTime) {
 			invulnerable = false;
 			renderer.material.color = Color.white;
 		} else if (timeSinceHit % 2 != 0) {
