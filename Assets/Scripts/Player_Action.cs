@@ -23,18 +23,17 @@ public class Player_Action : MonoBehaviour {
 	public int timeSinceHit = 51;
 	public bool invulnerable = false;
 	
-	public Sprite standingPit;
-	public Sprite duckingPit;
-	public Sprite upwardPit;
-	
 	public AudioClip hitByEnemy;
 	
 	public GameObject healthRenderer;
 	public GameObject heartsRenderer;
 	
+	public Player_Sprite_Control playerSprite;
+	
 	void Start () {
 		fallHandler = GetComponentInChildren<Player_Fall_Handler>();
-		bumpHandler = GetComponentInChildren<Player_Collision_Resolution>();	
+		bumpHandler = GetComponentInChildren<Player_Collision_Resolution>();
+		playerSprite = GetComponentInChildren<Player_Sprite_Control>();
 	}
 
 	void FixedUpdate () {
@@ -47,11 +46,11 @@ public class Player_Action : MonoBehaviour {
 		//falls of the bottom of the screen
 		Vector3 screenBottomLeft = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0));		
 		if (transform.position.y < screenBottomLeft.y) {
-			Application.LoadLevel("_Failed_Screen");
+			Application.LoadLevel("_Finished_Screen");
 		}
 		
 		//Horizontal/inplace movement
-		GetComponent<SpriteRenderer>().sprite = standingPit;
+		playerSprite.GetComponent<SpriteRenderer>().sprite = playerSprite.standingPit;
 		if ((Input.GetKey ("right") || Input.GetKey ("d")) && rightMoveRestricted == false) {
 			if (!faceUp) {
 				bool no_collisions = true;
@@ -90,14 +89,14 @@ public class Player_Action : MonoBehaviour {
 		}
 		if (Input.GetKey ("up") || Input.GetKey ("w")) {
 			faceUp = true;
-			GetComponent<SpriteRenderer>().sprite = upwardPit;
+			playerSprite.GetComponent<SpriteRenderer>().sprite = playerSprite.upwardPit;
 		} else {
 			faceUp = false;
 		}
 		if (Input.GetKey ("down") || Input.GetKey ("s")) {
 			transform.localScale = new Vector3 (1, 1, 1);
 			faceDown = true;
-			GetComponent<SpriteRenderer>().sprite = duckingPit;
+			playerSprite.GetComponent<SpriteRenderer>().sprite = playerSprite.duckingPit;
 		} else {
 			faceDown = false;
 		}
@@ -171,11 +170,11 @@ public class Player_Action : MonoBehaviour {
 	void UpdateHitControl() {
 		if (++timeSinceHit >= invulnTime) {
 			invulnerable = false;
-			renderer.material.color = Color.white;
+			playerSprite.renderer.material.color = Color.white;
 		} else if (timeSinceHit % 2 != 0) {
-			renderer.material.color = Color.red;
+			playerSprite.renderer.material.color = Color.red;
 		} else {
-			renderer.material.color = Color.yellow;
+			playerSprite.renderer.material.color = Color.yellow;
 		}
 	}
 	
