@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Restart : MonoBehaviour {
+public class Start : MonoBehaviour {
 
 	void FixedUpdate () {
 		if (Input.GetKey(KeyCode.Return)) {
