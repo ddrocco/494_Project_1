@@ -31,7 +31,7 @@ public class Foe_Dragon : Obj_Foe {
 		itemDropOnDeath = item.smallHeart;
 	}
 	
-	void FixedUpdate () { //enemy continues moving where it's moving
+	new void FixedUpdate () { //enemy continues moving where it's moving
 		animate ();
 		move();
 	}

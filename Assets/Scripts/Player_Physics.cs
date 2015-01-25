@@ -122,6 +122,8 @@ public class Player_Physics : MonoBehaviour {
 				currentJumpTime = 0;
 			} else if ((!Input.GetKey (".") && !Input.GetKey ("x"))) {
 				buttonHeld = false;
+			} else {
+				print ("stuff");
 			}
 		}
 		
@@ -160,6 +162,12 @@ public class Player_Physics : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter (Collider other) {
+		if (other.gameObject.layer == Layerdefs.blockThick) {
+			BlockCollision (other);
+		}
+	}
+	
+	void BlockCollision(Collider other) {
 		Vector3 otherLoc = other.gameObject.transform.position;
 		float leftEdge = otherLoc.x - 0.5f;
 		float rightEdge = otherLoc.x + 0.5f;
@@ -192,7 +200,7 @@ public class Player_Physics : MonoBehaviour {
 			float objEdge = yLoc + heightOffset;
 			yEntryRatio = (objEdge - bottomEdge) / vSpeed;
 		}
-
+		
 		
 		if (xEntryRatio > yEntryRatio) { //y "entered" first
 			Ground (); //See below for funciton details
@@ -215,19 +223,19 @@ public class Player_Physics : MonoBehaviour {
 				//resolve collision from right
 				//print (xEntryRatio + " " + yEntryRatio + " " + "RIGHT COLLISION");
 				transform.Translate (Vector3.right *
-             				(rightEdge - xLoc + 1.01f * widthOffset));
+				                     (rightEdge - xLoc + 1.01f * widthOffset));
 			} else {
 				//resolve collision from left
 				//print (xEntryRatio + " " + yEntryRatio + " " + "LEFT COLLISION");
 				transform.Translate (Vector3.right *
-             				(leftEdge - xLoc - 1.01f * widthOffset));
+				                     (leftEdge - xLoc - 1.01f * widthOffset));
 			}
 		} else {
 			newHSpeed = 0;
 			Ground ();
 			
 		}
-	return;
+		return;
 	}
 	
 	//CALLED BY: OnTriggerEnter()
@@ -243,4 +251,6 @@ public class Player_Physics : MonoBehaviour {
 	void OnTriggerStay (Collider other) {
 		OnTriggerEnter(other);
 	}
+	
+	
 }
