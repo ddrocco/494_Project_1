@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class Foe_Dragon : Obj_Foe {
-	public Player_Shoot player;
 
 	public enum direction {
 		left,
@@ -24,7 +23,6 @@ public class Foe_Dragon : Obj_Foe {
 	public Sprite animation1;
 	
 	void Start () {
-		player = FindObjectOfType<Player_Shoot>();
 		facePlayer ();
 		falling = true;
 		health = 1;
@@ -38,7 +36,7 @@ public class Foe_Dragon : Obj_Foe {
 	
 	void OnTriggerEnter (Collider other) { //Turn around or stop falling and face player
 		if (other.gameObject.layer == Layerdefs.pit) { //Player
-			other.GetComponent<Player_Action>().HitByEnemy();
+			player.HitByEnemy();
 		} else if (other.gameObject.layer == Layerdefs.projectile) { //Arrow
 			GameObject.Destroy(other.gameObject);
 			HitByArrow();

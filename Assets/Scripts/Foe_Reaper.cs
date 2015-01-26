@@ -13,7 +13,6 @@ public class Foe_Reaper : Obj_Foe {
 	public int timer;
 	public int calmPhaseTime = 45;
 	public int freakoutPhaseTime = 100;
-	public GameObject player;
 	
 	public Sprite animation0;
 	public Sprite animation1;
@@ -31,7 +30,6 @@ public class Foe_Reaper : Obj_Foe {
 	void Start () {
 		initialXValue = transform.position.x;
 		timer = 0;
-		player = FindObjectOfType<Player_Shoot>().gameObject;
 		GetComponent<SpriteRenderer>().sprite = animation0;
 		health = 7;
 		itemDropOnDeath = item.fullHeart;
@@ -41,7 +39,7 @@ public class Foe_Reaper : Obj_Foe {
 		respawnTimers = new List<int>{respawnTime, respawnTime, respawnTime, respawnTime};
 	}
 	
-	void FixedUpdate () {
+	new void FixedUpdate () {
 		GetComponentInParent<Obj_Foe>().FixedUpdate();
 		if (freakingOut == true) {
 			FreakoutUpdate();

@@ -10,7 +10,6 @@ public class Foe_Eye_Alt : Obj_Foe {
 		bLeft,
 	};
 
-	public GameObject player;
 	//public GameObject foeEye;
 	public float xSpeed;
 	public float ySpeed;
@@ -43,7 +42,7 @@ public class Foe_Eye_Alt : Obj_Foe {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	new void FixedUpdate () {
 		Vector3 temp  =  new Vector3(transform.position.x + xSpeed, transform.position.y + ySpeed, 0);
 		transform.position = temp;
 		if (transform.position.y == player.transform.position.y) {

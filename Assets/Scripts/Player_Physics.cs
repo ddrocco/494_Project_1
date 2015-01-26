@@ -39,14 +39,72 @@ public class Player_Physics : MonoBehaviour {
 		upwards,
 		crouching
 	}
-	public dirState facing;
-	public bool isLookingRight;
+	public static dirState facing;
+	public static bool isLookingRight;
 	public bool grounded = false;
-	public bool buttonHeld = false;
 	private float newVSpeed = 0;
 	private float newHSpeed = 0;
 	
-	// Update is called once per frame
+	//Key press controls
+	public bool startJump;
+	public bool jumpPressed;
+	public bool upPressed;
+	public bool downPressed;
+	public bool rightPressed;
+	public bool leftPressed;
+	
+	//For getting keys
+	void Update() {
+		GetHeldKeys();
+		GetNewKeyPresses();
+	}
+	
+	void GetHeldKeys() {
+		upPressed = false;
+		downPressed = false;
+		leftPressed = false;
+		rightPressed = false;
+		if ((Input.GetKey (".") || Input.GetKey ("x")) == false) {
+			jumpPressed = false;
+		}
+		if (Input.GetKey ("up") || Input.GetKey ("w")) {
+			//Take precedence over everything
+			upPressed = true;
+			return;
+		}
+		if ((Input.GetKey ("down") || Input.GetKey ("s"))) {
+			downPressed = true;
+		}
+		if ((Input.GetKey ("right") || Input.GetKey ("d"))) {
+			rightPressed = true;
+		}
+		if ((Input.GetKey ("left") || Input.GetKey ("a"))) {
+			leftPressed = true;
+		}
+	}
+	
+	void GetNewKeyPresses() {
+		if (upPressed == true) {
+			return;
+		}
+		if ((Input.GetKeyDown ("right") || Input.GetKeyDown ("d")) && Player_Physics.isLookingRight == false) {
+			leftPressed = false;
+			isLookingRight = true;
+		}
+		if ((Input.GetKeyDown ("left") || Input.GetKeyDown ("a")) && Player_Physics.isLookingRight == true) {
+			rightPressed = false;
+			isLookingRight = false;
+		}
+		if (downPressed == true) {
+			return;
+		}
+		if ((Input.GetKeyDown (".") || Input.GetKeyDown ("x")) && grounded == true) {
+			startJump = true;
+			jumpPressed = true;
+		}
+	}
+	
+	//For running game
 	void FixedUpdate () {
 		updateHSpeed();
 		updateVSpeed();
@@ -66,22 +124,32 @@ public class Player_Physics : MonoBehaviour {
 			}
 		}
 		
-		if ((Input.GetKey ("up") || Input.GetKey ("w"))) {
+		if (upPressed == true) {
+			if (facing == dirState.crouching) {
+				transform.localScale = new Vector3(transform.localScale.x, 1.5f, 1f);
+				transform.Translate (Vector3.up * 0.25f);
+			}
 			facing = dirState.upwards;
 		} else {
-			if ((Input.GetKey ("down") || Input.GetKey ("s"))) {
-				facing = dirState.crouching;
+			if (downPressed == true) {
+				if (facing != dirState.crouching) {
+					facing = dirState.crouching;
+					transform.localScale = new Vector3(transform.localScale.x, 1f, 1f);
+					transform.Translate (Vector3.down * 0.25f);
+				}
 			} else {
+				if (facing == dirState.crouching) {
+					transform.localScale = new Vector3(transform.localScale.x, 1.5f, 1f);
+					transform.Translate (Vector3.up * 0.25f);
+				}
 				facing = dirState.sideways;
 			}
 			
-			if ((Input.GetKey ("right") || Input.GetKey ("d"))) {
+			if (rightPressed == true) {
 				hSpeed += hAcceleration;
-				isLookingRight = true;
 			}
-			if ((Input.GetKey ("left") || Input.GetKey ("a"))) {
+			if (leftPressed == true) {
 				hSpeed -= hAcceleration;
-				isLookingRight = false;
 			}
 			
 			if (hSpeed > hSpeedMax) {
@@ -92,9 +160,9 @@ public class Player_Physics : MonoBehaviour {
 		}
 		
 		if (hSpeed > 0) {
-			transform.localScale = new Vector3(1f,1.5f,1f);
+			transform.localScale = new Vector3(1f,transform.localScale.y,1f);
 		} else if (hSpeed < 0) {
-			transform.localScale = new Vector3(-1f,1.5f,1f);
+			transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
 		}
 		newHSpeed = hSpeed;
 	}
@@ -113,18 +181,10 @@ public class Player_Physics : MonoBehaviour {
 	void updateVSpeed() {
 		vSpeed = newVSpeed;
 		
-		if (facing == dirState.sideways) {
-			if ((Input.GetKeyDown (".") || Input.GetKeyDown ("x")) && grounded == true) {
-				if (state != jumpState.jumping) {
-					buttonHeld = true;
-				}
-				state = jumpState.jumping;
-				currentJumpTime = 0;
-			} else if ((!Input.GetKey (".") && !Input.GetKey ("x"))) {
-				buttonHeld = false;
-			} else {
-				print ("stuff");
-			}
+		if (facing == dirState.sideways && startJump == true) {
+			startJump = false;
+			state = jumpState.jumping;
+			currentJumpTime = 0;
 		}
 		
 		if (state == jumpState.falling) {
@@ -142,7 +202,7 @@ public class Player_Physics : MonoBehaviour {
 		} else if (state == jumpState.jumping) {
 			vSpeed = jumpSpeed;
 			if (++currentJumpTime >= jumpTimeMax ||
-						(currentJumpTime >= jumpTimeMin && !buttonHeld)) {
+						(currentJumpTime >= jumpTimeMin && !jumpPressed)) {
 				state = jumpState.floating;
 				vSpeed = floatSpeed;
 				currentJumpTime = 0;
@@ -164,10 +224,13 @@ public class Player_Physics : MonoBehaviour {
 	void OnTriggerEnter (Collider other) {
 		if (other.gameObject.layer == Layerdefs.blockThick) {
 			BlockCollision (other);
+		} else if (other.gameObject.layer == Layerdefs.blockThin
+				&& facing != dirState.crouching) {
+			BlockCollision(other, thinBlock:true);
 		}
 	}
 	
-	void BlockCollision(Collider other) {
+	void BlockCollision(Collider other, bool thinBlock = false) {
 		Vector3 otherLoc = other.gameObject.transform.position;
 		float leftEdge = otherLoc.x - 0.5f;
 		float rightEdge = otherLoc.x + 0.5f;
@@ -181,6 +244,13 @@ public class Player_Physics : MonoBehaviour {
 		float yEntryRatio = float.MaxValue;
 		float widthOffset = Math.Abs (transform.localScale.x) / 2f;
 		float heightOffset = Math.Abs (transform.localScale.y) / 2f;
+		
+		//Ignores thinblock collisions unless Pit is in a narrow collision window:
+		if (thinBlock == true
+				&& (topEdge + heightOffset - yLoc < 0f
+		    	|| topEdge + heightOffset - yLoc > 0.6f)) {
+			return ;
+		}
 		
 		if (hSpeed < -0.01f) { //moving left, use rightedge
 			right = true;
@@ -201,7 +271,6 @@ public class Player_Physics : MonoBehaviour {
 			yEntryRatio = (objEdge - bottomEdge) / vSpeed;
 		}
 		
-		
 		if (xEntryRatio > yEntryRatio) { //y "entered" first
 			Ground (); //See below for funciton details
 			//state = jumpState.floating;
@@ -211,6 +280,9 @@ public class Player_Physics : MonoBehaviour {
 				transform.Translate (Vector3.up *
 				                     (topEdge - yLoc + 1.01f * heightOffset));
 			} else {
+				if (other.gameObject.layer == Layerdefs.blockThin) {
+					return;
+				}
 				//resolve collision from bottom
 				//print (xEntryRatio + " " + yEntryRatio + " " + "BOTTOM COLLISION");
 				transform.Translate (Vector3.up *
@@ -218,6 +290,9 @@ public class Player_Physics : MonoBehaviour {
 				ceilingHitTimer = 0;
 			}
 		} else if (xEntryRatio < yEntryRatio){
+			if (other.gameObject.layer == Layerdefs.blockThin) {
+				return;
+			}
 			newHSpeed = 0;
 			if (right == true) {
 				//resolve collision from right

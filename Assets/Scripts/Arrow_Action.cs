@@ -2,17 +2,17 @@
 using System.Collections;
 
 public class Arrow_Action : MonoBehaviour {
-	public float lifeTime = 0.3f;
+	public int lifeTime = 10;
 	public float speed = 0.3f;
-	private float timer = 0f;
+	private int timer = 0;
 	private Vector3 move;
 
 	void Start () {
-		if (Player_Action.faceUp) {
+		if (Player_Physics.facing == Player_Physics.dirState.upwards) {
 			transform.localScale = new Vector3 (0.25f, 0.75f, 0.25f);
 			move = new Vector3(0, speed, 0);
 		}
-		else if (Player_Action.faceRight) {
+		else if (Player_Physics.isLookingRight == true) {
 			move = new Vector3(speed, 0, 0);
 		}
 		else {
@@ -26,15 +26,15 @@ public class Arrow_Action : MonoBehaviour {
 		if (transform.position.x < screenBottomLeft.x || transform.position.x > screenTopRight.x) {
 			GameObject.Destroy (this.gameObject);
 		}
-		timer += 1.0f * Time.deltaTime;
 		transform.Translate (move);
-		if (timer >= lifeTime) {
+		if (++timer >= lifeTime) {
 			GameObject.Destroy (this.gameObject);
 		}
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		if (other.gameObject.layer == Layerdefs.blockThick) {
+		if (other.gameObject.layer == Layerdefs.blockThick
+				|| other.gameObject.layer == Layerdefs.blockThin) {
 			GameObject.Destroy(this.gameObject);
 		}
 	}

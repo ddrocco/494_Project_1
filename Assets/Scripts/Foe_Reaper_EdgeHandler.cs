@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Foe_Reaper_EdgeHandler : MonoBehaviour {
-	public int collisions = 1;
+	public int collisions = 0;
 	public List<Collider> collisionList;
 	public Foe_Reaper parent;
 	

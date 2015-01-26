@@ -19,6 +19,12 @@ public class Obj_Foe : MonoBehaviour {
 	public int invulnTime = 25;
 	public int timeSinceHit = 0;
 	public bool invulnerable = false;
+	
+	public Player_Enemy_Collision player;
+	
+	public void Awake() {
+		player = FindObjectOfType<Player_Enemy_Collision>();
+	}
 
 	public void FixedUpdate () {
 		if (++timeSinceHit >= invulnTime) {
@@ -28,6 +34,10 @@ public class Obj_Foe : MonoBehaviour {
 			renderer.material.color = Color.red;
 		} else {
 			renderer.material.color = Color.yellow;
+		}
+		
+		if (transform.position.y < player.transform.position.y - 5f) {
+			Destroy (gameObject);
 		}
 	}
 	

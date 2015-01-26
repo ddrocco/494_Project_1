@@ -37,6 +37,7 @@ public class Player_Action : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
+		print ("Thing");
 		if (invulnerable == true) {
 			UpdateHitControl();
 		}

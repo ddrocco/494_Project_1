@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class Foe_Eye_Movement : MonoBehaviour {
-	public GameObject player;
+public class Foe_Eye_Movement : Obj_Foe {
 	public List<Vector3> pattern;
 	public float velocityMax = 0.2f;
 	public float velocity;
@@ -52,7 +51,7 @@ public class Foe_Eye_Movement : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	new void FixedUpdate () {
 	
 		if (currentStage != stage.retreating) {
 			AdjustRotationAndMovement();
@@ -68,7 +67,10 @@ public class Foe_Eye_Movement : MonoBehaviour {
 				AttackPlayer();
 			} else if (Vector3.Distance(target, transform.position) < 0.5f) {
 				target = pattern[currentTarget];
-				currentTarget = (currentTarget + 1) % pattern.Count;
+				++currentTarget;
+				if (currentTarget >= pattern.Count) {
+					currentTarget = 0;
+				}
 				velocity = velocity / 4;
 				rotationSpeed = 0;
 			}

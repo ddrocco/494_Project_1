@@ -39,18 +39,29 @@ public class Screen_Wrapping : MonoBehaviour {
 		Vector3 ghostPosition = transform.position;
 		
 		//right ghost
-		ghostPosition.x = transform.position.x + screenWidth;
-		ghostPosition.y = transform.position.y;
-		ghosts [0].position = ghostPosition;
+		if (ghosts[0] != null) {
+			ghostPosition.x = transform.position.x + screenWidth;
+			ghostPosition.y = transform.position.y;
+			ghosts [0].position = ghostPosition;
+		} else {
+			Destroy (transform.gameObject);
+		}
 		
 		//left ghost
-		ghostPosition.x = transform.position.x - screenWidth;
-		ghostPosition.y = transform.position.y;
-		ghosts [1].position = ghostPosition;
+		if (ghosts[1] != null) {
+			ghostPosition.x = transform.position.x - screenWidth;
+			ghostPosition.y = transform.position.y;
+			ghosts [1].position = ghostPosition;
+		} else {
+			Destroy (transform.gameObject);
+		}
 	}
 	
 	void Swap() {
 		foreach (Transform ghost in ghosts) {
+			if (ghost == null) {
+				Destroy (transform.gameObject);
+			}
 			if (ghost.position.x < screenWidth &&
 			    ghost.position.x > -screenWidth)
 			{
@@ -84,5 +95,14 @@ public class Screen_Wrapping : MonoBehaviour {
 			Swap();
 		}
 		PositionGhosts ();
+	}
+	
+	void OnDestroy() {
+		if (ghosts[0] != null) {
+			Destroy(ghosts[0].gameObject);
+		}
+		if (ghosts[1] != null) {
+			Destroy(ghosts[1].gameObject);
+		}
 	}
 }
