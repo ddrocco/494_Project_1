@@ -5,27 +5,22 @@ using UnityEngine.UI;
 public class Player_Enemy_Collision : MonoBehaviour {
 	public int currency;
 	
-	public float health = 7;
-	public int invulnTime = 50; //2 seconds
-	public int timeSinceHit = 51;
-	public bool invulnerable = false;
+	public static float health = 7;
+	public static int invulnTime = 50; //2 seconds
+	public static int timeSinceHit = 51;
+	public static bool invulnerable = false;
 	
 	public AudioClip hitByEnemy;
 	
-	public GameObject healthRenderer;
-	public GameObject heartsRenderer;
-	
-	public Player_Sprite_Control playerSprite;
-	
-	// Use this for initialization
-	void Start () {
-		playerSprite = GetComponentInChildren<Player_Sprite_Control>();
-	}
+	public static GameObject healthRenderer;
+	public static GameObject heartsRenderer;
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 		if (invulnerable == true) {
 			UpdateHitControl();
+		} else {	
+			GetComponentInChildren<SpriteRenderer>().color = Color.white;
 		}
 		if (transform.position.y > Camera.main.transform.position.y) {
 			Camera.main.transform.Translate (new Vector3(0, 0.1f, 0));
@@ -50,11 +45,10 @@ public class Player_Enemy_Collision : MonoBehaviour {
 	void UpdateHitControl() {
 		if (++timeSinceHit >= invulnTime) {
 			invulnerable = false;
-			playerSprite.renderer.material.color = Color.white;
-		} else if (timeSinceHit % 2 != 0) {
-			playerSprite.renderer.material.color = Color.red;
-		} else {
-			playerSprite.renderer.material.color = Color.yellow;
+		} else if (timeSinceHit % 6 == 4) {
+			GetComponentInChildren<SpriteRenderer>().color = Color.yellow;
+		} else if (timeSinceHit % 6 == 1) {
+			GetComponentInChildren<SpriteRenderer>().color = Color.red;
 		}
 	}
 	

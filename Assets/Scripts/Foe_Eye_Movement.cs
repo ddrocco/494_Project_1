@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 
 public class Foe_Eye_Movement : Obj_Foe {
+	public int age = 0;
 	public List<Vector3> pattern;
 	public float velocityMax = 0.2f;
 	public float velocity;
@@ -30,28 +31,32 @@ public class Foe_Eye_Movement : Obj_Foe {
 	private float screenWidth;
 	private float screenHeight;
 	
+	private bool respawning = false;
+	private int respawnTimer = 75;
+	public int respawnMaxTime = 75;
 	
 	void Start () {
 		velocity = velocityMax;
 		rotationSpeed = 0f;
 		currentTarget = 0;
-		
-		screenBottomLeft = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0));
-		screenTopRight = Camera.main.ViewportToWorldPoint (new Vector3 (1, 1, 0));
-		screenWidth = screenTopRight.x - screenBottomLeft.x;
-		screenHeight = screenTopRight.y - screenBottomLeft.y;
-		
-		float targetX = screenBottomLeft.x + 3 * screenWidth / 4;
-		float targetY = screenBottomLeft.x + 3 * screenHeight / 4;
-		pattern.Add (new Vector3(targetX, targetY, 0));
-		pattern.Add (new Vector3(targetX, targetY-3, 0));
-		pattern.Add (new Vector3(-targetX, targetY, 0));
-		pattern.Add (new Vector3(-targetY, targetY-3, 0));
-		target = new Vector3(targetX, targetY, 0);
+
+		pattern.Add (Vector3.zero);
+		pattern.Add (Vector3.zero);
+		pattern.Add (Vector3.zero);
+		pattern.Add (Vector3.zero);
+		UpdateLocations();
+		PositionSpawn();
 	}
 	
 	// Update is called once per frame
 	new void FixedUpdate () {
+		if (respawning == true) {
+			if (++respawnTimer >= respawnMaxTime) {
+				PositionSpawn ();
+			} else {
+				return;
+			}
+		}
 	
 		if (currentStage != stage.retreating) {
 			AdjustRotationAndMovement();
@@ -85,13 +90,17 @@ public class Foe_Eye_Movement : Obj_Foe {
 				++attackTimer;
 			}
 		}
+		
+		UpdateLocations();
 	}
 	
 	void PositionSpawn() {
-		transform.position = Vector3.up * (screenTopRight.y + 5f);
+		print ("Spawn");
+		transform.position = Vector3.up * (screenTopRight.y + 15f);
 		float targetX = screenBottomLeft.x + 3 * screenWidth / 4;
 		float targetY = screenBottomLeft.x + 3 * screenHeight / 4;
 		target = new Vector3(targetX, targetY, 0);
+		respawning = false;
 	}
 	
 	void AttackPlayer() {
@@ -117,7 +126,22 @@ public class Foe_Eye_Movement : Obj_Foe {
 				|| transform.position.x > screenTopRight.x + 5f
 				|| transform.position.y < screenBottomLeft.y - 5f) {
 			currentStage = stage.defaulting;
+			respawning = true;
+			respawnTimer = 0;
 			PositionSpawn();
 		}
+	}
+	
+	void UpdateLocations() {
+		screenBottomLeft = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0));
+		screenTopRight = Camera.main.ViewportToWorldPoint (new Vector3 (1, 1, 0));
+		screenWidth = screenTopRight.x - screenBottomLeft.x;
+		screenHeight = screenTopRight.y - screenBottomLeft.y;
+		float targetX = screenBottomLeft.x + 3 * screenWidth / 4;
+		float targetY = screenBottomLeft.x + 3 * screenHeight / 4;
+		pattern[0] = new Vector3(targetX, targetY, 0);
+		pattern[1] = new Vector3(targetX, targetY-3, 0);
+		pattern[2] = new Vector3(-targetX, targetY, 0);
+		pattern[3] = new Vector3(-targetY, targetY-3, 0);
 	}
 }

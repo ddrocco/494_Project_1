@@ -10,7 +10,7 @@ public class Foe_Spawner : MonoBehaviour {
 	public List<Obj_Foe> foesList;
 	public Obj_Foe foePrefab;
 	public int timer;
-	public int spawnDelay = 40;
+	public int spawnDelay = 35;
 	
 	public List<int> respawnTimers;
 	public int respawnTime = 600;

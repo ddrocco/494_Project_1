@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Foe_Dragon_Fall_Handler : MonoBehaviour {
-	private int collisions = 0;
+	public int collisions = 0;
 	private Foe_Dragon parent;
 	
 	void Start () {
@@ -19,9 +19,11 @@ public class Foe_Dragon_Fall_Handler : MonoBehaviour {
 	}
 	
 	void FixedUpdate() {
-		if (collisions == 0 && parent.falling == false) {
+		if (collisions < 2 && parent.falling == false) {
 			parent.falling = true;
-			parent.facePlayer();
+			parent.FacePlayer();
+//			print (parent.transform.position.x < parent.player.transform.position.x);
+//			print ("PTPX: " + parent.transform.position.x + " + PPTPX " + parent.player.transform.position.x);
 		}
 	}
 

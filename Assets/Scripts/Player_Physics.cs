@@ -40,7 +40,7 @@ public class Player_Physics : MonoBehaviour {
 		crouching
 	}
 	public static dirState facing;
-	public static bool isLookingRight;
+	public static bool isLookingRight = true;
 	public bool grounded = false;
 	private float newVSpeed = 0;
 	private float newHSpeed = 0;

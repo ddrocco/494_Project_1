@@ -33,10 +33,11 @@ public class Arrow_Action : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		if (other.gameObject.layer == Layerdefs.blockThick
-				|| other.gameObject.layer == Layerdefs.blockThin) {
-			GameObject.Destroy(this.gameObject);
-		}
+		GameObject.Destroy(this.gameObject);
+		//if (other.gameObject.layer == Layerdefs.blockThick
+		//		|| other.gameObject.layer == Layerdefs.blockThin) {
+		//	
+		//}
 	}
 
 	void OnDestroy() {

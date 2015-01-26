@@ -12,7 +12,7 @@ public class Foe_Dragon : Obj_Foe {
 	public bool falling;
 	private bool collidedSinceLastUpdate;
 	public float horizontalSpeed = 3;
-	public float fallingSpeed = 3;
+	public float fallingSpeed = 8;
 	public float minTimeToFlip = 0;
 	public int collisionPauseTime = 25; //500 ms
 	public int collisionPauseTimer = 25;
@@ -23,39 +23,28 @@ public class Foe_Dragon : Obj_Foe {
 	public Sprite animation1;
 	
 	void Start () {
-		facePlayer ();
+		FacePlayer ();
 		falling = true;
 		health = 1;
 		itemDropOnDeath = item.smallHeart;
 	}
 	
 	new void FixedUpdate () { //enemy continues moving where it's moving
-		animate ();
-		move();
+		Animate ();
+		Move();
 	}
 	
 	void OnTriggerEnter (Collider other) { //Turn around or stop falling and face player
 		if (other.gameObject.layer == Layerdefs.pit) { //Player
-			player.HitByEnemy();
+			player.GetComponentInParent<Player_Enemy_Collision>().HitByEnemy();
 		} else if (other.gameObject.layer == Layerdefs.projectile) { //Arrow
-			GameObject.Destroy(other.gameObject);
 			HitByArrow();
 		} else if (collidedSinceLastUpdate == false) {
-			collidedSinceLastUpdate = true;
-			if (falling == true) { //Correct for falling; Height of collision block from center is 0.5
-				transform.position += Vector3.up * (other.gameObject.transform.position.y + 1.01f - transform.position.y);
-				falling = false;
-			} else if (facing == direction.left) {
-				transform.position += Vector3.right * (other.gameObject.transform.position.x + 1.01f - transform.position.x);
-				flipDirection();
-			} else {
-				transform.position += Vector3.right * (other.gameObject.transform.position.x - 1.01f - transform.position.x);
-				flipDirection();
-			}
+			BlockCollision(other);
 		}
 	}
 	
-	private void animate() {
+	private void Animate() {
 		if (++stepsSinceAnimation == animationSteps) {
 			GetComponent<SpriteRenderer>().sprite = animation0;
 		} else if (stepsSinceAnimation == 2*animationSteps) {
@@ -64,39 +53,59 @@ public class Foe_Dragon : Obj_Foe {
 		}
 	}
 	
-	private void move() {
-		Vector3 translation = Vector3.zero; //Initialization doesn't matter
+	private void Move() {
 		collidedSinceLastUpdate = false;
 		if (falling == true) {
-			translation = Vector3.down * fallingSpeed;
-			transform.position += translation * Time.fixedDeltaTime;
-		} else if (collisionPauseTimer == collisionPauseTime) {
+			transform.Translate(Vector3.down * fallingSpeed);
+		} else if (collisionPauseTimer >= collisionPauseTime) {
 			if (facing == direction.left) {
-				translation = Vector3.left * horizontalSpeed;
+				transform.Translate (Vector3.right * -horizontalSpeed);
 			} else {
-				translation = Vector3.right * horizontalSpeed;
+				transform.Translate (Vector3.right * horizontalSpeed);
 			}
-			transform.position += translation * Time.fixedDeltaTime;
 		} else {
 			++collisionPauseTimer;
 		}
 	}
 	
-	public void facePlayer() {
+	public void FacePlayer() {
 		if (transform.position.x < player.transform.position.x && facing == direction.left) {
-			flipDirection();
+			FlipDirection();
 		} else if (transform.position.x >= player.transform.position.x && facing == direction.right) {
-			flipDirection ();
+			FlipDirection ();
 		}
 	}
 	
-	public void flipDirection() {
+	public void FlipDirection() {
 		collisionPauseTimer = 0;
 		transform.localScale = new Vector3(-transform.localScale.x,1f,1f);
 		if (facing == direction.right) {
 			facing = direction.left;
 		} else if (facing == direction.left) {
 			facing = direction.right;
+		}
+	}
+	
+	public void BlockCollision(Collider other) {
+		Bounds dragonBounds = GetComponent<BoxCollider>().collider.bounds;
+		Bounds blockBounds = other.collider.bounds;
+		if (falling == true) {
+			//float dragonBottomEdge = dragonBounds.center.y - dragonBounds.extents.y;
+			//float blockTopEdge = blockBounds.center.y + blockBounds.extents.y;
+			//print (blockTopEdge - dragonBottomEdge - 0.2f);
+			//transform.Translate(Vector3.up * (blockTopEdge - dragonBottomEdge + 1.05f));
+			transform.Translate(Vector3.up * (0.2f));
+			falling = false;
+		} else if (facing == direction.left) {
+			float dragonLeftEdge = dragonBounds.center.x - dragonBounds.extents.x;
+			float blockRightEdge = blockBounds.center.x + blockBounds.extents.x;
+			transform.Translate(Vector3.right * (blockRightEdge - dragonLeftEdge + 0.01f));
+			FlipDirection();
+		} else {
+			float dragonRightEdge = dragonBounds.center.x + dragonBounds.extents.x;
+			float blockLeftEdge = blockBounds.center.x - blockBounds.extents.x;
+			transform.Translate(Vector3.right * (blockLeftEdge - dragonRightEdge - 0.01f));
+			FlipDirection();
 		}
 	}
 

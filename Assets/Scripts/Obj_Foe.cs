@@ -20,10 +20,10 @@ public class Obj_Foe : MonoBehaviour {
 	public int timeSinceHit = 0;
 	public bool invulnerable = false;
 	
-	public Player_Enemy_Collision player;
+	public Player_Shoot player;
 	
 	public void Awake() {
-		player = FindObjectOfType<Player_Enemy_Collision>();
+		player = FindObjectOfType<Player_Shoot>();
 	}
 
 	public void FixedUpdate () {
