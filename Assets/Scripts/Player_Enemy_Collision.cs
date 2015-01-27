@@ -40,6 +40,12 @@ public class Player_Enemy_Collision : MonoBehaviour {
 			UpdateUI();
 			return;
 		}
+		else if (other.gameObject.layer == Layerdefs.chalice) { //Chalice
+			++health;
+			Destroy (other.gameObject);
+			UpdateUI();
+			return;
+		}
 	}
 	
 	void UpdateHitControl() {
