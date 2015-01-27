@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Player_Enemy_Collision : MonoBehaviour {
 	public int currency;
-	
+	public int mallets = 0;
 	public static float health = 7;
 	public static int invulnTime = 50; //2 seconds
 	public static int timeSinceHit = 51;
@@ -44,6 +44,11 @@ public class Player_Enemy_Collision : MonoBehaviour {
 			++health;
 			Destroy (other.gameObject);
 			UpdateUI();
+			return;
+		}
+		else if (other.gameObject.layer == Layerdefs.mallet) { //Mallet
+			++mallets;
+			Destroy (other.gameObject);
 			return;
 		}
 	}

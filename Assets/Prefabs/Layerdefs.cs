@@ -16,4 +16,5 @@ public static class Layerdefs{
 	public const int blockThick = 14;
 	public const int blockThin = 15;
 	public const int chalice = 16;
+	public const int mallet = 17;
 }
