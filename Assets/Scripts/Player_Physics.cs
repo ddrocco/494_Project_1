@@ -8,7 +8,8 @@ public class Player_Physics : MonoBehaviour {
 	public float hSpeed = 0;
 	public float hSpeedMax = 0.1f;
 	public float hFriction = 0.05f;
-	public float hAcceleration = 0.8f;
+	public float hAccelerationGround = 0.8f;
+	public float hAccelerationAir = 0.1f;
 	
 	
 	//Variable jumping
@@ -146,10 +147,18 @@ public class Player_Physics : MonoBehaviour {
 			}
 			
 			if (rightPressed == true) {
-				hSpeed += hAcceleration;
+				if (grounded == true) {
+					hSpeed += hAccelerationGround;
+				} else {
+					hSpeed += hAccelerationAir;
+				}
 			}
 			if (leftPressed == true) {
-				hSpeed -= hAcceleration;
+				if (grounded == true) {
+					hSpeed -= hAccelerationGround;
+				} else {
+					hSpeed -= hAccelerationAir;
+				}
 			}
 			
 			if (hSpeed > hSpeedMax) {
