@@ -51,6 +51,7 @@ public class Player_Enemy_Collision : MonoBehaviour {
 			Destroy (other.gameObject);
 			return;
 		}
+		
 	}
 	
 	void UpdateHitControl() {

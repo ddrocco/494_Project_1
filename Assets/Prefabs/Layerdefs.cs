@@ -17,4 +17,5 @@ public static class Layerdefs{
 	public const int blockThin = 15;
 	public const int chalice = 16;
 	public const int mallet = 17;
+	public const int harp = 18;
 }
