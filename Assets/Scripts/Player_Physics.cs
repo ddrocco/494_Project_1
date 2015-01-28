@@ -56,6 +56,8 @@ public class Player_Physics : MonoBehaviour {
 	public bool rightPressed;
 	public bool leftPressed;
 	
+	public static bool isDead = false;
+	
 	//For getting keys
 	void Update() {
 		GetHeldKeys();
@@ -109,6 +111,10 @@ public class Player_Physics : MonoBehaviour {
 	
 	//For running game
 	void FixedUpdate () {
+		if (isDead) {
+			transform.Translate (-0.1f * Vector3.up);
+			return;
+		}
 		updateHSpeed();
 		updateVSpeed();
 		updateHLocation();
@@ -233,6 +239,10 @@ public class Player_Physics : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter (Collider other) {
+		if (isDead) {
+			return;
+		}
+		
 		if (other.gameObject.layer == Layerdefs.blockThick) {
 			BlockCollision (other);
 		} else if (other.gameObject.layer == Layerdefs.blockThin

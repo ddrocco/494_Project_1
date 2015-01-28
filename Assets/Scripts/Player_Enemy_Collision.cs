@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Player_Enemy_Collision : MonoBehaviour {
 	public int currency;
 	public int mallets = 0;
-	public static float health = 7;
+	public static int health = 7;
 	public static int invulnTime = 50; //2 seconds
 	public static int timeSinceHit = 51;
 	public static bool invulnerable = false;
@@ -79,8 +79,13 @@ public class Player_Enemy_Collision : MonoBehaviour {
 			healthRenderer = GameObject.FindWithTag("Health_Renderer");
 			heartsRenderer = GameObject.FindWithTag("Hearts_Renderer");
 		}
-		healthRenderer.GetComponent<Text>().text = "Health: " + health.ToString();
-		heartsRenderer.GetComponent<Text>().text = "Hearts: " + toThreeDigits (currency);
+		if (health <= 0) {
+			Player_Physics.isDead = true;
+			GetComponentInChildren<SpriteRenderer>().sprite
+					= GetComponentInChildren<Player_Sprite_Control>().dyingPit;
+		}
+		healthRenderer.GetComponent<Healthbar_Renderer>().SetHealthCount(health);
+		heartsRenderer.GetComponent<Text>().text = toThreeDigits (currency);
 	}
 	
 	public string toThreeDigits(int hearts) {

@@ -81,5 +81,9 @@ public class Obj_Foe : MonoBehaviour {
 			HitByArrow();
 		}
 	}
+	
+	void CollisionStay(Collider other) {
+		CollisionTrigger (other);
+	}
 
 }

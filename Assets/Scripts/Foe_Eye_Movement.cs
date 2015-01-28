@@ -33,6 +33,8 @@ public class Foe_Eye_Movement : Obj_Foe {
 	//USED FOR PREPARING:
 	public float entrySpeed = 0.09f;
 	
+	public bool isEye; //As opposed to reaper jr
+	
 	void Start() {
 		birthTime = Time.time;
 		lastLocation = transform.position;
@@ -103,8 +105,12 @@ public class Foe_Eye_Movement : Obj_Foe {
 		if ((transform.position.x < Foe_Eye_Cluster.screenBottomLeft.x - 5f
 				|| transform.position.x > Foe_Eye_Cluster.screenTopRight.x + 5f
 				|| transform.position.y < Foe_Eye_Cluster.screenBottomLeft.y - 5f)) {
-			currentStage = stage.respawning;
-			respawnTimer = 0;
+			if (isEye == true) { //Respawn eye
+				currentStage = stage.respawning;
+				respawnTimer = 0;
+			} else { //Destroy reaper
+				Destroy(gameObject);
+			}
 		}
 	}
 	

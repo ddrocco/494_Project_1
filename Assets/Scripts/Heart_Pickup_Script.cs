@@ -5,6 +5,8 @@ public class Heart_Pickup_Script : MonoBehaviour {
 	public int value;
 	public Sprite fullHeart;
 	public Sprite halfHeart;
+	public int lifetime = 100;
+	public int birthTime;
 	
 	public Heart_Pickup_Script(int val) {
 		value = val;
@@ -21,6 +23,12 @@ public class Heart_Pickup_Script : MonoBehaviour {
 			GetComponent<SpriteRenderer>().sprite = fullHeart;
 			transform.localScale = new Vector3(1f,1f,1f);
 		}
+		birthTime = 0;
 	}
-
+	
+	void FixedUpdate() {
+		if (++birthTime >= lifetime) {
+			Destroy (gameObject);
+		}	
+	}
 }
