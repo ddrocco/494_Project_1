@@ -18,4 +18,5 @@ public static class Layerdefs{
 	public const int chalice = 16;
 	public const int mallet = 17;
 	public const int harp = 18;
+	public const int door = 19;
 }

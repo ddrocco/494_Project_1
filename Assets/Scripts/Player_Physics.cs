@@ -237,6 +237,15 @@ public class Player_Physics : MonoBehaviour {
 				&& facing != dirState.crouching) {
 			BlockCollision(other, thinBlock:true);
 		}
+		else if (other.gameObject.layer == Layerdefs.door) {
+			Testing_Door temp = other.GetComponent<Testing_Door>();
+			Vector3 newpos = temp.dest.transform.position;
+			newpos.x += temp.xDisp;
+			float xDisp = transform.position.x - newpos.x;
+			float yDisp = transform.position.y - newpos.y;
+			transform.position = newpos;
+			Camera.main.transform.Translate(new Vector3(xDisp, yDisp, 0));
+		}
 	}
 	
 	void BlockCollision(Collider other, bool thinBlock = false) {

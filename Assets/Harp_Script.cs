@@ -22,12 +22,6 @@ public class Harp_Script : MonoBehaviour {
 				}
 			}
 			
-			int i = 0;
-			foreach (GameObject go in allFoes) {
-				++i;
-				print (i);
-			}
-			
 			foreach (GameObject foe in allFoes) {
 				if (foe.transform.position.y - transform.position.y < 1.5f * screenHeight) {
 						Instantiate(mallet, foe.transform.position, foe.transform.rotation);
