@@ -45,7 +45,7 @@ public class Obj_Foe : MonoBehaviour {
 		if (invulnerable == true) {
 			return;
 		}
-		if (--health == 0) {
+		if (--health <= 0) {
 			GameObject heart;
 			heart = Instantiate(heartPrefab,transform.position,Quaternion.identity) as GameObject;
 			Heart_Pickup_Script heartScript = heart.GetComponent<Heart_Pickup_Script>();
@@ -72,6 +72,14 @@ public class Obj_Foe : MonoBehaviour {
 		}
 		//Drop item:		
 		//Puff of smoke (should spawn item when smoke clears
+	}
+	
+	public void CollisionTrigger(Collider other) {
+		if (other.gameObject.layer == Layerdefs.pit) { //Player
+			player.GetComponentInParent<Player_Enemy_Collision>().HitByEnemy();
+		} else if (other.gameObject.layer == Layerdefs.projectile) { //Arrow
+			HitByArrow();
+		}
 	}
 
 }

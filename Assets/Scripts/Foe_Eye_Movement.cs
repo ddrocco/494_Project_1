@@ -6,6 +6,7 @@ public class Foe_Eye_Movement : Obj_Foe {
 	public float birthTime;
 	
 	public enum stage {
+		preparing,
 		defaulting,
 		attacking,
 		retreating,
@@ -29,18 +30,33 @@ public class Foe_Eye_Movement : Obj_Foe {
 	private float attackHCenter;
 	public float horizPhase = 2f;
 	
+	//USED FOR PREPARING:
+	public float entrySpeed = 0.09f;
+	
 	void Start() {
 		birthTime = Time.time;
 		lastLocation = transform.position;
+		health = 1;
+		transform.position = Foe_Eye_Cluster.SpawnPosition();
 	}
 	
 	// Update is called once per frame
 	new void FixedUpdate () {
 		//Foe_Eye_Cluster.horizTime = newHT;
 		//Foe_Eye_Cluster.verticalTime = newVT;
-		if (currentStage == stage.respawning && ++respawnTimer >= respawnMaxTime) {
-			birthTime = Time.time;
-			currentStage = stage.defaulting;
+		if (currentStage == stage.preparing) {
+			Vector3 destination = Foe_Eye_Cluster.WavePosition(6f);
+			Vector3 displacement = destination - transform.position;
+			if (displacement.magnitude < entrySpeed) {
+				currentStage = stage.defaulting;
+				birthTime = 6f;
+			} else {
+				transform.Translate (displacement.normalized * entrySpeed);
+			}
+		} else if (currentStage == stage.respawning && ++respawnTimer >= respawnMaxTime) {
+			currentStage = stage.preparing;
+			transform.position = Foe_Eye_Cluster.SpawnPosition();
+			transform.localScale = new Vector3(1f, 1f, 1f);
 		} else if (currentStage == stage.defaulting) {
 			DefaultMovement();
 		} else if (currentStage == stage.attacking) {
@@ -61,7 +77,8 @@ public class Foe_Eye_Movement : Obj_Foe {
 			}
 			return;
 		}
-		transform.position = Foe_Eye_Cluster.WavePosition(Time.time - birthTime);
+		birthTime += Time.fixedDeltaTime;
+		transform.position = Foe_Eye_Cluster.WavePosition(birthTime);
 		if (lastLocation.x > transform.position.x) {
 			transform.localScale = new Vector3(-1f, 1f, 1f);
 		} else {
@@ -89,5 +106,9 @@ public class Foe_Eye_Movement : Obj_Foe {
 			currentStage = stage.respawning;
 			respawnTimer = 0;
 		}
+	}
+	
+	void OnTriggerEnter(Collider other) {
+		CollisionTrigger(other);
 	}
 }

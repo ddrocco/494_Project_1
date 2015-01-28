@@ -78,7 +78,7 @@ public class Foe_Reaper : Obj_Foe {
 	}
 	
 	private void FreakoutUpdate() {
-		//spawnMonsters();
+		spawnMonsters();
 		if (++timer >= freakoutPhaseTime) {
 			timer = calmPhaseTime;
 			freakingOut = false;
@@ -118,12 +118,10 @@ public class Foe_Reaper : Obj_Foe {
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		if (other.gameObject.layer == Layerdefs.projectile) { //Arrow
-			GameObject.Destroy(other.gameObject);
-			HitByArrow();
-			return;
+		if (other.gameObject.layer == Layerdefs.blockThick) {
+			flipAround ();
 		}
-		flipAround ();
+		CollisionTrigger(other);
 	}
 	
 	void flipAround() {

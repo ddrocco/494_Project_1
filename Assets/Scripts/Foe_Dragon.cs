@@ -34,14 +34,12 @@ public class Foe_Dragon : Obj_Foe {
 		Move();
 	}
 	
-	void OnTriggerEnter (Collider other) { //Turn around or stop falling and face player
-		if (other.gameObject.layer == Layerdefs.pit) { //Player
-			player.GetComponentInParent<Player_Enemy_Collision>().HitByEnemy();
-		} else if (other.gameObject.layer == Layerdefs.projectile) { //Arrow
-			HitByArrow();
-		} else if (collidedSinceLastUpdate == false) {
+	void OnTriggerEnter(Collider other) { //Turn around or stop falling and face player
+		if (other.gameObject.layer == Layerdefs.blockThick
+				&& collidedSinceLastUpdate == false) {
 			BlockCollision(other);
 		}
+		CollisionTrigger(other);
 	}
 	
 	private void Animate() {

@@ -60,6 +60,10 @@ public class Foe_Eye_Cluster : MonoBehaviour {
 		return new Vector3(hPos, vPos, 0);
 	}
 	
+	public static Vector3 SpawnPosition() {
+		return Vector3.up * (screenTopRight.y + 2f) - 2f * Vector3.right;
+	}
+	
 	private static float Ease(float value) {
 		float modifiedValue = 2f*value;
 		if (modifiedValue > 1f) {
