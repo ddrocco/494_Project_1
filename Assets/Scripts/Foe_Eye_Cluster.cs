@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Foe_Eye_Cluster : MonoBehaviour {
-	private static int timer = 0;	//runs indefinitely
-	
 	//VERTICAL: follows a sin wave (updated frequently to match camera height)
 		//Recorcd camera stuff
 	//HORIZONTAL: bezier interpolation between edges
@@ -30,7 +28,7 @@ public class Foe_Eye_Cluster : MonoBehaviour {
 	private static float horizontalCutoff = 0.9f;
 	private static float verticalRatio = 0.75f;
 	
-	private static float apparentScreenClimbRate = 0.02f;
+	private static float apparentScreenClimbRate = 1f;
 	
 	void Start () {
 		screenBottomLeft = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0));
@@ -59,7 +57,6 @@ public class Foe_Eye_Cluster : MonoBehaviour {
 		
 		float vPos = verticalCenter + verticalVariance * Mathf.Sin (vRatio * 2 * Mathf.PI);
 		float hPos = horizontalLeft * hRatioEased + horizontalRight * (1 - hRatioEased);
-		print (hRatio + " || " + hRatioEased + " || " + horizontalLeft + " || " + horizontalRight);
 		return new Vector3(hPos, vPos, 0);
 	}
 	

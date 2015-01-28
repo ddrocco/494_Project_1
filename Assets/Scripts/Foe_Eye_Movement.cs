@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 public class Foe_Eye_Movement : Obj_Foe {
 	public float birthTime;
 	
@@ -12,18 +11,23 @@ public class Foe_Eye_Movement : Obj_Foe {
 		retreating,
 		respawning
 	};
-	public int attackTimer;
-	public int attackTimeTotal = 150;
 	public stage currentStage = stage.defaulting;
 
 	private int respawnTimer = 75;
 	public int respawnMaxTime = 75;
 	
 	private Vector3 lastLocation;
+	public float attackDistance = 4f;
 	
 	//CAN MODIFY STATIC VALUES; USE THESE FOR TWEAKING:
 	//public float newHT = 3f;
 	//public float newVT = 5f;
+	
+	//USED FOR ATTACKING:
+	public float attackFallSpeed = 0.09f;
+	public float attackOscillationSize = 2f;
+	private float attackHCenter;
+	public float horizPhase = 2f;
 	
 	void Start() {
 		birthTime = Time.time;
@@ -38,37 +42,40 @@ public class Foe_Eye_Movement : Obj_Foe {
 			birthTime = Time.time;
 			currentStage = stage.defaulting;
 		} else if (currentStage == stage.defaulting) {
-			//print (Vector3.Distance (player.transform.position, transform.position));
-			/*if (++attackTimer > attackTimeTotal
-			    		&& Vector3.Distance (player.transform.position, transform.position) < 5f) {
-				AttackPlayer();
-			} else {*/
-				transform.position = Foe_Eye_Cluster.WavePosition(Time.time - birthTime);
-				if (lastLocation.x > transform.position.x) {
-					transform.localScale = new Vector3(-1f, 1f, 1f);
-				} else {
-					transform.localScale = new Vector3(1f, 1f, 1f);
-				}
-				lastLocation = transform.position;
-			//}
+			DefaultMovement();
 		} else if (currentStage == stage.attacking) {
-			/*if (attackTimer >= attackTimeTotal || Vector3.Distance(, transform.position) < 0.25f) {
-				currentStage = stage.retreating;
-			} else if (Vector3.Distance(target, transform.position) < 2f) {
-				++attackTimer;
-			}*/
-			transform.Translate (Vector3.right);
+			AttackMovement();
 		} else if (currentStage == stage.retreating) {
 			transform.Translate (Vector3.right);
 		}
-		CheckScreenPositionAndDespawn();
 	}
 	
-	void AttackPlayer() {
-		currentStage = stage.attacking;
-		transform.Translate (Vector3.right);
-		//target = player.transform.position + new Vector3(Random.Range(-1,1), Random.Range(-1,1), 0);
-		attackTimer = 0;
+	void DefaultMovement() {
+		if (Vector3.Distance (player.transform.position, transform.position) < attackDistance) {
+			currentStage = stage.attacking;
+			attackHCenter = transform.position.x;
+			if (transform.position.x - lastLocation.x > 0f) { //Moving right
+				birthTime = Time.time;
+			} else {
+				birthTime = Time.time + horizPhase / 2;
+			}
+			return;
+		}
+		transform.position = Foe_Eye_Cluster.WavePosition(Time.time - birthTime);
+		if (lastLocation.x > transform.position.x) {
+			transform.localScale = new Vector3(-1f, 1f, 1f);
+		} else {
+			transform.localScale = new Vector3(1f, 1f, 1f);
+		}
+		lastLocation = transform.position;
+	}
+	
+	void AttackMovement() {
+		float phaseTime = 2f * Mathf.PI * (Time.time - birthTime) / horizPhase;
+		//print (Time.time + " " + birthTime + " " + horizPhase);
+		float hOffset = attackOscillationSize * Mathf.Sin(phaseTime);
+		transform.position = new Vector3(attackHCenter + hOffset, transform.position.y - attackFallSpeed, 0);
+		CheckScreenPositionAndDespawn();
 	}
 	
 	void AdjustRotationAndMovement() {
@@ -76,8 +83,7 @@ public class Foe_Eye_Movement : Obj_Foe {
 	}
 	
 	void CheckScreenPositionAndDespawn() {
-		if (currentStage != stage.respawning
-				&& (transform.position.x < Foe_Eye_Cluster.screenBottomLeft.x - 5f
+		if ((transform.position.x < Foe_Eye_Cluster.screenBottomLeft.x - 5f
 				|| transform.position.x > Foe_Eye_Cluster.screenTopRight.x + 5f
 				|| transform.position.y < Foe_Eye_Cluster.screenBottomLeft.y - 5f)) {
 			currentStage = stage.respawning;
