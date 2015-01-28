@@ -41,7 +41,7 @@ public class Player_Enemy_Collision : MonoBehaviour {
 			return;
 		}
 		else if (other.gameObject.layer == Layerdefs.chalice) { //Chalice
-			++health;
+			health = 7;
 			Destroy (other.gameObject);
 			UpdateUI();
 			return;

@@ -4,7 +4,8 @@ using System;
 
 public class Player_Physics : MonoBehaviour {
 	//For teleportin
-	private float teleTimer = 0;
+	
+	//private float teleTimer = 0;
 	
 	//Variable walking
 	public float vSpeed = 0;

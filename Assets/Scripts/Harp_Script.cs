@@ -9,7 +9,7 @@ public class Harp_Script : MonoBehaviour {
 	void OnTriggerEnter (Collider other) {
 		
 		if (other.gameObject.layer == Layerdefs.pit) {
-			print ("hello");
+			//print ("hello");
 			
 			Vector3 screenBottomLeft = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0));
 			Vector3 screenTopRight = Camera.main.ViewportToWorldPoint (new Vector3 (1, 1, 0));
