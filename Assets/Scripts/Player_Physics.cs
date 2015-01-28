@@ -3,6 +3,9 @@ using System.Collections;
 using System;
 
 public class Player_Physics : MonoBehaviour {
+	//For teleportin
+	private float teleTimer = 0;
+	
 	//Variable walking
 	public float vSpeed = 0;
 	public float hSpeed = 0;
@@ -10,7 +13,6 @@ public class Player_Physics : MonoBehaviour {
 	public float hFriction = 0.05f;
 	public float hAccelerationGround = 0.8f;
 	public float hAccelerationAir = 0.1f;
-	
 	
 	//Variable jumping
 	public float fallSpeedMax = 0.15f;
@@ -236,16 +238,23 @@ public class Player_Physics : MonoBehaviour {
 		} else if (other.gameObject.layer == Layerdefs.blockThin
 				&& facing != dirState.crouching) {
 			BlockCollision(other, thinBlock:true);
-		}
-		else if (other.gameObject.layer == Layerdefs.door) {
-			Testing_Door temp = other.GetComponent<Testing_Door>();
-			Vector3 newpos = temp.dest.transform.position;
-			newpos.x += temp.xDisp;
-			float xDisp = transform.position.x - newpos.x;
-			float yDisp = transform.position.y - newpos.y;
-			transform.position = newpos;
-			Camera.main.transform.Translate(new Vector3(xDisp, yDisp, 0));
-		}
+		} /*else if (other.gameObject.layer == Layerdefs.door) {
+//			if (Time.time - teleTimer > 1) {
+				print ("teleport!");
+				teleTimer = Time.time;
+				Testing_Door temp = other.GetComponent<Testing_Door>();
+				Vector3 newpos = temp.dest.transform.position;
+				newpos.x += temp.xDisp;
+				Vector3 newCamPos = Camera.main.transform.position;
+				//float xDisp = transform.position.x - newpos.x;
+				//float yDisp = transform.position.y - newpos.y;
+				//newCamPos.x -= xDisp;
+				//newCamPos.y -= yDisp;
+				newCamPos.x += 11 * -1 * (temp.xDisp/1.1f);
+				transform.position = newpos;
+				//Camera.main.transform.position = newCamPos;
+//			} else print ("no teleport :(");
+		}*/
 	}
 	
 	void BlockCollision(Collider other, bool thinBlock = false) {
