@@ -10,7 +10,7 @@ public class Player_Physics : MonoBehaviour {
 	//Variable walking
 	public float vSpeed = 0;
 	public float hSpeed = 0;
-	public float hSpeedMax = 0.1f;
+	public float hSpeedMax = 0.075f;
 	public float hFriction = 0.05f;
 	public float hAccelerationGround = 0.8f;
 	public float hAccelerationAir = 0.1f;
@@ -54,8 +54,8 @@ public class Player_Physics : MonoBehaviour {
 	public bool jumpPressed;
 	public bool upPressed;
 	public bool downPressed;
-	public bool rightPressed;
-	public bool leftPressed;
+	public static bool rightPressed;
+	public static bool leftPressed;
 	
 	public static bool isDead = false;
 	
@@ -78,13 +78,13 @@ public class Player_Physics : MonoBehaviour {
 			upPressed = true;
 			return;
 		}
-		if ((Input.GetKey ("down") || Input.GetKey ("s"))) {
+		if (Input.GetKey ("down") || Input.GetKey ("s")) {
 			downPressed = true;
 		}
-		if ((Input.GetKey ("right") || Input.GetKey ("d"))) {
+		if (Input.GetKey ("right") || Input.GetKey ("d")) {
 			rightPressed = true;
 		}
-		if ((Input.GetKey ("left") || Input.GetKey ("a"))) {
+		if (Input.GetKey ("left") || Input.GetKey ("a")) {
 			leftPressed = true;
 		}
 	}

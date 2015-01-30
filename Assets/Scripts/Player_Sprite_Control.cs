@@ -8,6 +8,12 @@ public class Player_Sprite_Control : MonoBehaviour {
 	public Sprite upwardPit;
 	public Sprite dyingPit;
 	
+	public Sprite walk1;
+	public Sprite walk2;
+	public Sprite walk3;
+	public int animationSteps = 3;
+	public int stepsSinceAnimation = 0;
+	
 	public void FixedUpdate() {
 		//print(renderer.material.color);
 		//print (GetComponent<SpriteRenderer>().renderer.material.color);
@@ -25,7 +31,21 @@ public class Player_Sprite_Control : MonoBehaviour {
 		}
 		else if (Player_Physics.facing == Player_Physics.dirState.sideways) {
 			transform.localScale = new Vector3(transform.localScale.x, 2f/3, 1);
-			GetComponent<SpriteRenderer>().sprite = standingPit;
+			if (Player_Physics.leftPressed || Player_Physics.rightPressed) {
+				if (stepsSinceAnimation == animationSteps) {
+					GetComponent<SpriteRenderer>().sprite = walk1;
+					standingPit = walk1;
+				} else if (stepsSinceAnimation == 2*animationSteps) {
+					GetComponent<SpriteRenderer>().sprite = walk2;
+					standingPit = walk2;
+				} else if (stepsSinceAnimation == 3*animationSteps) {
+					GetComponent<SpriteRenderer>().sprite = walk3;
+					standingPit = walk3;
+					stepsSinceAnimation = -1;
+				}
+				++stepsSinceAnimation;
+			}
+			else GetComponent<SpriteRenderer>().sprite = standingPit;
 		}
 	}
 }
