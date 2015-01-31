@@ -3,49 +3,88 @@ using System.Collections;
 
 public class Player_Sprite_Control : MonoBehaviour {
 
-	public Sprite standingPit;
-	public Sprite duckingPit;
-	public Sprite upwardPit;
-	public Sprite dyingPit;
+	public Sprite standingPit, duckingPit, upwardPit, dyingPit, walk1, walk2, walk3, jump1, jump2, currentSprite;
 	
-	public Sprite walk1;
-	public Sprite walk2;
-	public Sprite walk3;
-	public int animationSteps = 3;
-	public int stepsSinceAnimation = 0;
+	public int totalAnimationSteps = 2;
+	public static int currentAnimationSteps = 0;
+	public static bool isWalkingRight;
 	
 	public void FixedUpdate() {
-		//print(renderer.material.color);
-		//print (GetComponent<SpriteRenderer>().renderer.material.color);
-		//AlterColor(Color.black);
+		//print (Time.time + " " + currentAnimationSteps);
+		//print(currentAnimationSteps);
+		
 		if (Player_Physics.isDead) {
 			return;
 		}
+		
+		UpdateAnimationSteps();
+		
+		if ((Player_Physics.facing != Player_Physics.dirState.upwards)
+				&& (currentAnimationSteps == -1)) {
+			if (Player_Physics.leftPressed) {
+				isWalkingRight = false;
+				currentAnimationSteps = 0;
+			} else if (Player_Physics.rightPressed) {
+				isWalkingRight = true;
+				currentAnimationSteps = 0;
+			}
+		}
+	}
+	
+	void UpdateAnimationSteps() {
+		//Handles all animations and keeps track of animation / movement counter.
+		
 		if (Player_Physics.facing == Player_Physics.dirState.crouching) {
+			//Handle crouching Pit sprites
 			transform.localScale = new Vector3(transform.localScale.x, 1, 1);
 			GetComponent<SpriteRenderer>().sprite = duckingPit;
-		}
-		else if (Player_Physics.facing == Player_Physics.dirState.upwards) {
+		} else if (Player_Physics.facing == Player_Physics.dirState.upwards) {
+			//Facing up stops Pit dead in his tracks.
 			transform.localScale = new Vector3(transform.localScale.x, 2f/3, 1);
+			currentAnimationSteps = -1;
 			GetComponent<SpriteRenderer>().sprite = upwardPit;
-		}
-		else if (Player_Physics.facing == Player_Physics.dirState.sideways) {
+			return;
+		} else {
 			transform.localScale = new Vector3(transform.localScale.x, 2f/3, 1);
-			if (Player_Physics.leftPressed || Player_Physics.rightPressed) {
-				if (stepsSinceAnimation == animationSteps) {
-					GetComponent<SpriteRenderer>().sprite = walk1;
-					standingPit = walk1;
-				} else if (stepsSinceAnimation == 2*animationSteps) {
-					GetComponent<SpriteRenderer>().sprite = walk2;
-					standingPit = walk2;
-				} else if (stepsSinceAnimation == 3*animationSteps) {
-					GetComponent<SpriteRenderer>().sprite = walk3;
-					standingPit = walk3;
-					stepsSinceAnimation = -1;
-				}
-				++stepsSinceAnimation;
+			GetComponent<SpriteRenderer>().sprite = currentSprite;
+		}
+		
+		
+		
+		if (Player_Physics.groundTime > 4) {
+			//Handle jumping animation
+			
+			if (Player_Physics.facing == Player_Physics.dirState.crouching) {
+				return;
 			}
-			else GetComponent<SpriteRenderer>().sprite = standingPit;
+			
+			if (Player_Physics.jumpPressed == true && Player_Physics.state == Player_Physics.jumpState.jumping) {
+				currentSprite = jump1;
+			} else {
+				currentSprite = jump2;
+			}
+			return;
+		}
+		
+		if (currentAnimationSteps != -1) {
+			if (currentAnimationSteps == totalAnimationSteps) {
+				currentSprite = walk1;
+				print ("hupp");
+			} else if (currentAnimationSteps == 2*totalAnimationSteps) {
+				currentSprite = walk2;
+				print ("two");
+			} else if (currentAnimationSteps == 3*totalAnimationSteps) {
+				currentSprite = walk3;
+				print ("three");
+			} else if (currentAnimationSteps >= 4*totalAnimationSteps) {
+				currentSprite = standingPit;
+				currentAnimationSteps = -1;
+				print ("four");
+				return;
+			}			
+			//Increment currentAnimationSteps if they're not maxed.
+			++currentAnimationSteps;
+			print ("Incremented!");
 		}
 	}
 }

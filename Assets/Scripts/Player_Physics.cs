@@ -11,9 +11,7 @@ public class Player_Physics : MonoBehaviour {
 	public float vSpeed = 0;
 	public float hSpeed = 0;
 	public float hSpeedMax = 0.075f;
-	public float hFriction = 0.05f;
-	public float hAccelerationGround = 0.8f;
-	public float hAccelerationAir = 0.1f;
+	public float hAccelerationAir = 0.01f;
 	
 	//Variable jumping
 	public float fallSpeedMax = 0.15f;
@@ -25,7 +23,7 @@ public class Player_Physics : MonoBehaviour {
 	public float jumpSpeed = 0.23f;
 	public float floatSpeed = 0.005f;
 	
-	public float groundTime = 4;
+	public static float groundTime = 4;
 	public float groundTimeMax = 4;
 	public int ceilingHitStunTime = 15;
 	public int ceilingHitTimer = 15;
@@ -36,7 +34,6 @@ public class Player_Physics : MonoBehaviour {
 		jumping,
 		falling
 	}
-	public jumpState state;
 	public int currentJumpTime;
 	public enum dirState {
 		sideways,
@@ -44,20 +41,21 @@ public class Player_Physics : MonoBehaviour {
 		crouching
 	}
 	public static dirState facing;
-	public static bool isLookingRight = true;
-	public bool grounded = false;
 	private float newVSpeed = 0;
 	private float newHSpeed = 0;
 	
 	//Key press controls
 	public bool startJump;
-	public bool jumpPressed;
 	public bool upPressed;
 	public bool downPressed;
+	
+	public static bool isLookingRight = true;
+	public static bool grounded = false;
+	public static bool jumpPressed = false;
+	public static bool isDead = false;
+	public static jumpState state;
 	public static bool rightPressed;
 	public static bool leftPressed;
-	
-	public static bool isDead = false;
 	
 	//For getting keys
 	void Update() {
@@ -73,13 +71,12 @@ public class Player_Physics : MonoBehaviour {
 		if ((Input.GetKey (".") || Input.GetKey ("x")) == false) {
 			jumpPressed = false;
 		}
-		if (Input.GetKey ("up") || Input.GetKey ("w")) {
-			//Take precedence over everything
-			upPressed = true;
-			return;
-		}
 		if (Input.GetKey ("down") || Input.GetKey ("s")) {
 			downPressed = true;
+		}
+		if ((Input.GetKey ("up") || Input.GetKey ("w")) && downPressed == false) {
+			upPressed = true;
+			return;
 		}
 		if (Input.GetKey ("right") || Input.GetKey ("d")) {
 			rightPressed = true;
@@ -95,11 +92,9 @@ public class Player_Physics : MonoBehaviour {
 		}
 		if ((Input.GetKeyDown ("right") || Input.GetKeyDown ("d")) && Player_Physics.isLookingRight == false) {
 			leftPressed = false;
-			isLookingRight = true;
 		}
 		if ((Input.GetKeyDown ("left") || Input.GetKeyDown ("a")) && Player_Physics.isLookingRight == true) {
 			rightPressed = false;
-			isLookingRight = false;
 		}
 		if (downPressed == true) {
 			return;
@@ -116,30 +111,33 @@ public class Player_Physics : MonoBehaviour {
 			transform.Translate (-0.1f * Vector3.up);
 			return;
 		}
-		updateHSpeed();
-		updateVSpeed();
-		updateHLocation();
-		updateVLocation();
+		UpdateFacing();
+		UpdateHSpeed();
+		UpdateVSpeed();
+		UpdateHLocation();
+		UpdateVLocation();
 	}
 	
-	void updateHSpeed() {
-		hSpeed = newHSpeed;
-		if (grounded) {	//"Friction"
-			if (hSpeed > hFriction) {
-				hSpeed -= hFriction;
-			} else if (hSpeed > -hFriction) {
-				hSpeed = 0;
+	void UpdateFacing() {
+		if (Player_Sprite_Control.currentAnimationSteps == -1) {
+			if (leftPressed == true) {
+				isLookingRight = false;
+			} else if (rightPressed == true) {
+				isLookingRight = true;
 			} else {
-				hSpeed += hFriction;
+				hSpeed = 0;
 			}
 		}
-		
+			
 		if (upPressed == true) {
 			if (facing == dirState.crouching) {
 				transform.localScale = new Vector3(transform.localScale.x, 1.5f, 1f);
 				transform.Translate (Vector3.up * 0.25f);
 			}
 			facing = dirState.upwards;
+			if (grounded == true) {
+				Player_Sprite_Control.currentAnimationSteps = -1;
+			}
 		} else {
 			if (downPressed == true) {
 				if (facing != dirState.crouching) {
@@ -154,20 +152,33 @@ public class Player_Physics : MonoBehaviour {
 				}
 				facing = dirState.sideways;
 			}
-			
-			if (rightPressed == true) {
-				if (grounded == true) {
-					hSpeed += hAccelerationGround;
-				} else {
-					hSpeed += hAccelerationAir;
-				}
+		}
+	}
+	
+	void UpdateHSpeed() {
+		hSpeed = newHSpeed;
+		
+		if (grounded) {	//"Friction"
+			if (Player_Sprite_Control.currentAnimationSteps == -1) {
+				hSpeed = 0;
 			}
-			if (leftPressed == true) {
-				if (grounded == true) {
-					hSpeed -= hAccelerationGround;
+		}
+		
+		if (groundTime <= 4) {
+			if (Player_Sprite_Control.currentAnimationSteps > -1 && facing != dirState.upwards) {
+				if (Player_Sprite_Control.isWalkingRight == true) {
+					hSpeed = hSpeedMax;
 				} else {
-					hSpeed -= hAccelerationAir;
+					hSpeed = -hSpeedMax;
 				}
+			} else {
+				hSpeed = 0;
+			}
+		} else {
+			if (rightPressed) {
+				hSpeed += hAccelerationAir;
+			} else if (leftPressed) {
+				hSpeed -= hAccelerationAir;
 			}
 			
 			if (hSpeed > hSpeedMax) {
@@ -179,13 +190,15 @@ public class Player_Physics : MonoBehaviour {
 		
 		if (hSpeed > 0) {
 			transform.localScale = new Vector3(1f,transform.localScale.y,1f);
+			isLookingRight = true;
 		} else if (hSpeed < 0) {
 			transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
+			isLookingRight = false;
 		}
 		newHSpeed = hSpeed;
 	}
 	
-	void updateHLocation() {
+	void UpdateHLocation() {
 		if (++ceilingHitTimer < ceilingHitStunTime) {
 			return;
 		}
@@ -196,13 +209,29 @@ public class Player_Physics : MonoBehaviour {
 		}
 	}
 	
-	void updateVSpeed() {
+	void UpdateVSpeed() {
 		vSpeed = newVSpeed;
 		
 		if (facing == dirState.sideways && startJump == true) {
 			startJump = false;
 			state = jumpState.jumping;
 			currentJumpTime = 0;
+			if (Player_Sprite_Control.currentAnimationSteps == -1) {
+				hSpeed = 0;
+			} else if (Player_Sprite_Control.currentAnimationSteps < 5) {
+				//WARNING: UPDATES HSPEED:
+				if (isLookingRight) {
+					hSpeed = hSpeedMax / 2;
+				} else {
+					hSpeed = -hSpeedMax / 2;
+				}
+			} else {
+				if (isLookingRight) {
+					hSpeed = hSpeedMax;
+				} else {
+					hSpeed = -hSpeedMax;
+				}
+			}
 		}
 		
 		if (state == jumpState.falling) {
@@ -231,7 +260,7 @@ public class Player_Physics : MonoBehaviour {
 		return;
 	}
 	
-	void updateVLocation() {
+	void UpdateVLocation() {
 		if (++ceilingHitTimer < ceilingHitStunTime) {
 			return;
 		}
@@ -317,6 +346,18 @@ public class Player_Physics : MonoBehaviour {
 				//print (xEntryRatio + " " + yEntryRatio + " " + "TOP COLLISION");
 				transform.Translate (Vector3.up *
 				                     (topEdge - yLoc + 1.01f * heightOffset));
+				if (state == jumpState.falling && Math.Abs (hSpeed) > hSpeedMax / 4) {
+					Player_Sprite_Control.currentAnimationSteps = 0;
+					if (hSpeed > 0) {
+						Player_Sprite_Control.isWalkingRight = true;
+						isLookingRight = true;
+						transform.localScale = new Vector3(1, transform.localScale.y, 1);
+					} else {
+						Player_Sprite_Control.isWalkingRight = false;
+						isLookingRight = false;
+						transform.localScale = new Vector3(-1, transform.localScale.y, 1);
+					}
+				}
 			} else {
 				if (other.gameObject.layer == Layerdefs.blockThin) {
 					return;
