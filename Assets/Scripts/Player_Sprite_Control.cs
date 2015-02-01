@@ -18,6 +18,7 @@ public class Player_Sprite_Control : MonoBehaviour {
 		}
 		
 		UpdateAnimationSteps();
+		//print (currentAnimationSteps);
 		
 		if ((Player_Physics.facing != Player_Physics.dirState.upwards)
 				&& (currentAnimationSteps == -1)) {
@@ -76,7 +77,7 @@ public class Player_Sprite_Control : MonoBehaviour {
 			} else if (currentAnimationSteps == 3*totalAnimationSteps) {
 				currentSprite = walk3;
 				print ("three");
-			} else if (currentAnimationSteps >= 4*totalAnimationSteps) {
+			} else if (currentAnimationSteps == 4*totalAnimationSteps) {
 				currentSprite = standingPit;
 				currentAnimationSteps = -1;
 				print ("four");
@@ -84,7 +85,7 @@ public class Player_Sprite_Control : MonoBehaviour {
 			}			
 			//Increment currentAnimationSteps if they're not maxed.
 			++currentAnimationSteps;
-			print ("Incremented!");
+			//print ("Incremented!");
 		}
 	}
 }
