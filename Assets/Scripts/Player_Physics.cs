@@ -191,9 +191,11 @@ public class Player_Physics : MonoBehaviour {
 		if (hSpeed > 0) {
 			transform.localScale = new Vector3(1f,transform.localScale.y,1f);
 			isLookingRight = true;
+			Player_Sprite_Control.isWalkingRight = true;
 		} else if (hSpeed < 0) {
 			transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
 			isLookingRight = false;
+			Player_Sprite_Control.isWalkingRight = false;
 		}
 		newHSpeed = hSpeed;
 	}
@@ -216,21 +218,12 @@ public class Player_Physics : MonoBehaviour {
 			startJump = false;
 			state = jumpState.jumping;
 			currentJumpTime = 0;
-			if (Player_Sprite_Control.currentAnimationSteps == -1) {
+			if (leftPressed == true) {
+				hSpeed = -hSpeedMax;
+			} else if (rightPressed == true) {
+				hSpeed = hSpeedMax;
+			} else if (Player_Sprite_Control.currentAnimationSteps == -1) {
 				hSpeed = 0;
-			} else if (Player_Sprite_Control.currentAnimationSteps < 5) {
-				//WARNING: UPDATES HSPEED:
-				if (isLookingRight) {
-					hSpeed = hSpeedMax / 2;
-				} else {
-					hSpeed = -hSpeedMax / 2;
-				}
-			} else {
-				if (isLookingRight) {
-					hSpeed = hSpeedMax;
-				} else {
-					hSpeed = -hSpeedMax;
-				}
 			}
 		}
 		
@@ -348,15 +341,6 @@ public class Player_Physics : MonoBehaviour {
 				                     (topEdge - yLoc + 1.01f * heightOffset));
 				if (state == jumpState.falling && Math.Abs (hSpeed) > hSpeedMax / 4) {
 					Player_Sprite_Control.currentAnimationSteps = 0;
-					if (hSpeed > 0) {
-						Player_Sprite_Control.isWalkingRight = true;
-						isLookingRight = true;
-						transform.localScale = new Vector3(1, transform.localScale.y, 1);
-					} else {
-						Player_Sprite_Control.isWalkingRight = false;
-						isLookingRight = false;
-						transform.localScale = new Vector3(-1, transform.localScale.y, 1);
-					}
 				}
 			} else {
 				if (other.gameObject.layer == Layerdefs.blockThin) {
