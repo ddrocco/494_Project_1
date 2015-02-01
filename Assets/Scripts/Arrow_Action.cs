@@ -4,8 +4,8 @@ using System.Collections;
 public class Arrow_Action : MonoBehaviour {
 	public int lifeTime = 10;
 	public float speed = 0.3f;
-	private int timer = 0;
-	private Vector3 move;
+	private int age = 0;
+	public Vector3 move;
 
 	void Start () {
 		if (Player_Physics.facing == Player_Physics.dirState.upwards) {
@@ -20,14 +20,14 @@ public class Arrow_Action : MonoBehaviour {
 		}
 	}
 	
-	void Update () {
+	void FixedUpdate () {
 		Vector3 screenBottomLeft = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0));
 		Vector3 screenTopRight = Camera.main.ViewportToWorldPoint (new Vector3 (1, 1, 0));
 		if (transform.position.x < screenBottomLeft.x || transform.position.x > screenTopRight.x) {
 			GameObject.Destroy (this.gameObject);
 		}
 		transform.Translate (move);
-		if (++timer >= lifeTime) {
+		if (++age >= lifeTime) {
 			GameObject.Destroy (this.gameObject);
 		}
 	}

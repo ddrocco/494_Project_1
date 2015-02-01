@@ -70,17 +70,17 @@ public class Player_Sprite_Control : MonoBehaviour {
 		if (currentAnimationSteps != -1) {
 			if (currentAnimationSteps == totalAnimationSteps) {
 				currentSprite = walk1;
-				print ("hupp");
+				//print ("hupp");
 			} else if (currentAnimationSteps == 2*totalAnimationSteps) {
 				currentSprite = walk2;
-				print ("two");
+				//print ("two");
 			} else if (currentAnimationSteps == 3*totalAnimationSteps) {
 				currentSprite = walk3;
-				print ("three");
+				//print ("three");
 			} else if (currentAnimationSteps == 4*totalAnimationSteps) {
 				currentSprite = standingPit;
 				currentAnimationSteps = -1;
-				print ("four");
+				//print ("four");
 				return;
 			}			
 			//Increment currentAnimationSteps if they're not maxed.
