@@ -15,7 +15,7 @@ public class Heart_Pickup_Script : MonoBehaviour {
 
 	void Start () {
 		if (value == 1) {
-			GetComponent<SpriteRenderer>().sprite = fullHeart;
+			GetComponent<SpriteRenderer>().sprite = smallHeart;
 		} else if (value == 5) {
 			GetComponent<SpriteRenderer>().sprite = halfHeart;
 		} else {
