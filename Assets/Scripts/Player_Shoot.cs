@@ -8,7 +8,12 @@ public class Player_Shoot : MonoBehaviour {
 	public int cooldownWaitTime = 15;
 	public int cooldownTimer = 15;
 	
-	public bool hasSuperArrow = false;
+	public static bool hasSuperArrow = false;
+	public bool hasSuperArrowVariable = false;
+	
+	void Awake() {
+		hasSuperArrow = hasSuperArrowVariable;
+	}
 	
 	void Update () {
 		if (++cooldownTimer >= cooldownWaitTime

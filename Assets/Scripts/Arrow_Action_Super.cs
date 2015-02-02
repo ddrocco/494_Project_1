@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Arrow_Action_Super : MonoBehaviour {
-	public int lifeTime = 10;
+	public int lifeTime = 20;
 	public float speed = 0.3f;
 	private int age = 0;
 	public Vector3 move;
@@ -33,8 +33,12 @@ public class Arrow_Action_Super : MonoBehaviour {
 		}
 		transform.Translate (move);
 		if (surging == true && keyIsHeld) {
+			if (gameObject.layer == Layerdefs.projectile) {
+				gameObject.layer = Layerdefs.transparentFX;
+			}
 			float ratio = surgeAge/surgeDuration;
-			transform.localScale = new Vector3 (1.5f * ratio, 1.5f * ratio, 1);
+			transform.rotation = Quaternion.Euler(90f * Vector3.back);
+			transform.localScale = new Vector3 (0.8f * ratio, 0.8f * ratio, 1);
 			surgeAge += Time.fixedDeltaTime;
 			if (surgeAge >= surgeDuration) {
 				Relaunch();
@@ -44,7 +48,6 @@ public class Arrow_Action_Super : MonoBehaviour {
 		}
 		
 		if ((Input.GetKey ("z") || Input.GetKey (",")) == false) {
-			print ("You let go");
 			keyIsHeld = false;
 		}		
 	}
@@ -52,7 +55,9 @@ public class Arrow_Action_Super : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (keyIsHeld == false || other.gameObject.layer == Layerdefs.blockThick) {
 			GameObject.Destroy(this.gameObject);
-		} else if (surging == false) {
+		}
+		transform.position = other.transform.position;
+		if (surging == false) {
 			transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
 			move = new Vector3(0, 0, 0);
 			surgeAge = 0;
@@ -68,15 +73,17 @@ public class Arrow_Action_Super : MonoBehaviour {
 	void Relaunch() {
 		surging = false;
 		age = 0;
+		transform.localScale = new Vector3 (0.25f, 0.75f, 0.25f);
+		move = new Vector3(0, speed, 0);
+		gameObject.layer = Layerdefs.projectile;
 		if (Player_Physics.facing == Player_Physics.dirState.upwards) {
-			transform.localScale = new Vector3 (0.25f, 0.75f, 0.25f);
-			move = new Vector3(0, speed, 0);
-		}
-		else if (Player_Physics.isLookingRight == true) {
-			move = new Vector3(speed, 0, 0);
-		}
-		else {
-			move = new Vector3(-speed, 0, 0);
+			transform.rotation = Quaternion.Euler(90f * Vector3.up);
+		} else if (Player_Physics.facing == Player_Physics.dirState.crouching) {
+			transform.rotation = Quaternion.Euler(90f * Vector3.up + 180f * Vector3.back);
+		} else if (Player_Physics.isLookingRight == true) {
+			transform.rotation = Quaternion.Euler(90f * Vector3.back);
+		} else {
+			transform.rotation = Quaternion.Euler(90f * Vector3.forward);
 		}
 	}
 }

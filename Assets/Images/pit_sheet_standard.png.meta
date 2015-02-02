@@ -10,6 +10,14 @@ TextureImporter:
     21300010: pit_sheet_standard_5
     21300012: pit_sheet_standard_6
     21300014: pit_sheet_standard_7
+    21300016: pit_sheet_standard_8
+    21300018: pit_sheet_standard_9
+    21300020: pit_sheet_standard_10
+    21300022: pit_sheet_standard_11
+    21300024: pit_sheet_standard_12
+    21300026: pit_sheet_standard_13
+    21300028: pit_sheet_standard_14
+    21300030: pit_sheet_standard_15
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -55,7 +63,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 24
         width: 16
         height: 24
       alignment: 0
@@ -65,7 +73,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 36
-        y: 0
+        y: 24
         width: 16
         height: 24
       alignment: 0
@@ -75,7 +83,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 72
-        y: 0
+        y: 24
         width: 16
         height: 24
       alignment: 0
@@ -85,7 +93,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 108
-        y: 0
+        y: 24
         width: 16
         height: 24
       alignment: 0
@@ -95,7 +103,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 144
-        y: 0
+        y: 24
         width: 16
         height: 24
       alignment: 0
@@ -105,7 +113,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 180
-        y: 0
+        y: 24
         width: 16
         height: 24
       alignment: 0
@@ -115,13 +123,93 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 216
-        y: 0
+        y: 24
         width: 16
         height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: pit_sheet_standard_7
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 24
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: pit_sheet_standard_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: pit_sheet_standard_9
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: pit_sheet_standard_10
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: pit_sheet_standard_11
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: pit_sheet_standard_12
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: pit_sheet_standard_13
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: pit_sheet_standard_14
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: pit_sheet_standard_15
       rect:
         serializedVersion: 2
         x: 252

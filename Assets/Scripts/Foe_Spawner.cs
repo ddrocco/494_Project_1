@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Foe_Spawner : MonoBehaviour {
+	public int foesNum = 4;
 	public int yMargin = 5;
 	public Player_Shoot player;
 	public Vector3 relativeSpawnLocation;
@@ -37,7 +38,7 @@ public class Foe_Spawner : MonoBehaviour {
 			for (int i = 0; i < respawnTimers.Count; ++i) {
 				if (respawnTimers[i] > respawnTime) {
 					//Check if too many monsters already exist
-					if (foesList.Count < 4) {
+					if (foesList.Count < foesNum) {
 						Obj_Foe newFoe = Instantiate(foePrefab, spawnLocation, Quaternion.identity) as Obj_Foe;
 						newFoe.spawner = this;
 						newFoe.spawned = true;

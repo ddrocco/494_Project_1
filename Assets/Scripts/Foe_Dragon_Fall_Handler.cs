@@ -10,12 +10,19 @@ public class Foe_Dragon_Fall_Handler : MonoBehaviour {
 		parent = GetComponentInParent<Foe_Dragon>();
 	}
 	
-	void OnTriggerEnter() {
-		++collisions;
+	void OnTriggerEnter(Collider other) {
+		if (other.gameObject.layer == Layerdefs.blockThick
+		    	|| other.gameObject.layer == Layerdefs.blockThin) {
+			++collisions;
+		}
 	}
 	
-	void OnTriggerExit() {
-		--collisions;
+	void OnTriggerExit(Collider other) {
+		if (other.gameObject.layer == Layerdefs.blockThick
+				|| other.gameObject.layer == Layerdefs.blockThin)
+		{
+			--collisions;
+		}
 	}
 	
 	void FixedUpdate() {

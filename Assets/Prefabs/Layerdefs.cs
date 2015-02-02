@@ -19,4 +19,5 @@ public static class Layerdefs{
 	public const int mallet = 17;
 	public const int harp = 18;
 	public const int door = 19;
+	public const int node = 20;
 }

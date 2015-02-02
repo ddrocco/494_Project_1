@@ -3,11 +3,16 @@ using System.Collections;
 
 public class Player_Sprite_Control : MonoBehaviour {
 
-	public Sprite standingPit, duckingPit, upwardPit, dyingPit, walk1, walk2, walk3, jump1, jump2, currentSprite;
+	public Sprite standingPit, duckingPit, upwardPit, dyingPit, walk1, walk2, walk3, jump1, jump2, currentSprite,
+		gStandingPit, gDuckingPit, gUpwardPit, gDyingPit, gWalk1, gWalk2, gWalk3, gJump1, gJump2;
 	
 	public int totalAnimationSteps = 2;
 	public static int currentAnimationSteps = 0;
 	public static bool isWalkingRight;
+	
+	void Start() {
+		UpdateArrowStatus()	;	
+	}
 	
 	public void FixedUpdate() {
 		//print (Time.time + " " + currentAnimationSteps);
@@ -87,5 +92,20 @@ public class Player_Sprite_Control : MonoBehaviour {
 			++currentAnimationSteps;
 			//print ("Incremented!");
 		}
+	}
+	
+	public void UpdateArrowStatus () {
+		if (Player_Shoot.hasSuperArrow == true) {
+			standingPit = gStandingPit;
+			duckingPit = gDuckingPit;
+			upwardPit = gUpwardPit;
+			dyingPit = gDyingPit;
+			walk1 = gWalk1;
+			walk2 = gWalk2;
+			walk3 = gWalk3;
+			jump1 = gJump1;
+			jump2 = gJump2;
+		}
+		currentSprite = standingPit;
 	}
 }

@@ -32,12 +32,15 @@ public class Foe_Dragon : Obj_Foe {
 	new void FixedUpdate () { //enemy continues moving where it's moving
 		Animate ();
 		Move();
+		OffscreenDestroy();
 	}
 	
 	void OnTriggerEnter(Collider other) { //Turn around or stop falling and face player
-		if (other.gameObject.layer == Layerdefs.blockThick
+		if ((other.gameObject.layer == Layerdefs.blockThick
+				|| other.gameObject.layer == Layerdefs.blockThin)
 				&& collidedSinceLastUpdate == false) {
 			BlockCollision(other);
+			collidedSinceLastUpdate = true;
 		}
 		CollisionTrigger(other);
 	}
@@ -94,6 +97,8 @@ public class Foe_Dragon : Obj_Foe {
 			//transform.Translate(Vector3.up * (blockTopEdge - dragonBottomEdge + 1.05f));
 			transform.Translate(Vector3.up * (0.2f));
 			falling = false;
+		} else if (other.gameObject.layer == Layerdefs.blockThin) {
+			return;
 		} else if (facing == direction.left) {
 			float dragonLeftEdge = dragonBounds.center.x - dragonBounds.extents.x;
 			float blockRightEdge = blockBounds.center.x + blockBounds.extents.x;
@@ -107,4 +112,9 @@ public class Foe_Dragon : Obj_Foe {
 		}
 	}
 
+	void OffscreenDestroy() {
+		if (transform.position.y < Foe_Eye_Cluster.screenBottomLeft.y - 5f) {
+		     Destroy(gameObject);
+		}
+	}
 }
