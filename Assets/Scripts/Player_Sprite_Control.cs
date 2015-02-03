@@ -3,15 +3,17 @@ using System.Collections;
 
 public class Player_Sprite_Control : MonoBehaviour {
 
-	public Sprite standingPit, duckingPit, upwardPit, dyingPit, walk1, walk2, walk3, jump1, jump2, currentSprite,
+	public Sprite currentSprite, standingPit, wDuckingPit, wUpwardPit, dyingPit, walk1, walk2, walk3, jump1, jump2,
 		gStandingPit, gDuckingPit, gUpwardPit, gDyingPit, gWalk1, gWalk2, gWalk3, gJump1, gJump2;
+		
+	public static Sprite duckingPit, upwardPit;
 	
 	public int totalAnimationSteps = 2;
 	public static int currentAnimationSteps = 0;
 	public static bool isWalkingRight;
 	
 	void Start() {
-		UpdateArrowStatus()	;	
+		UpdateSpriteColor()	;
 	}
 	
 	public void FixedUpdate() {
@@ -66,6 +68,7 @@ public class Player_Sprite_Control : MonoBehaviour {
 			
 			if (Player_Physics.jumpPressed == true && Player_Physics.state == Player_Physics.jumpState.jumping) {
 				currentSprite = jump1;
+				print ("uhh:)");
 			} else {
 				currentSprite = jump2;
 			}
@@ -94,8 +97,12 @@ public class Player_Sprite_Control : MonoBehaviour {
 		}
 	}
 	
-	public void UpdateArrowStatus () {
-		if (Player_Shoot.hasSuperArrow == true) {
+	public void UpdateSpriteColor () {
+		print ("Squee");
+		if (Player_Shoot.hasSuperArrow == false) {
+			duckingPit = wDuckingPit;
+			upwardPit = wUpwardPit;
+		} else {
 			standingPit = gStandingPit;
 			duckingPit = gDuckingPit;
 			upwardPit = gUpwardPit;

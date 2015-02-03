@@ -90,14 +90,14 @@ public class Player_Action : MonoBehaviour {
 		}
 		if (Input.GetKey ("up") || Input.GetKey ("w")) {
 			faceUp = true;
-			playerSprite.GetComponent<SpriteRenderer>().sprite = playerSprite.upwardPit;
+			playerSprite.GetComponent<SpriteRenderer>().sprite = Player_Sprite_Control.upwardPit;
 		} else {
 			faceUp = false;
 		}
 		if (Input.GetKey ("down") || Input.GetKey ("s")) {
 			transform.localScale = new Vector3 (1, 1, 1);
 			faceDown = true;
-			playerSprite.GetComponent<SpriteRenderer>().sprite = playerSprite.duckingPit;
+			playerSprite.GetComponent<SpriteRenderer>().sprite = Player_Sprite_Control.duckingPit;
 		} else {
 			faceDown = false;
 		}
