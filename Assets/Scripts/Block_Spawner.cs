@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Block_Spawner : MonoBehaviour {
 	public List<Vector3> blocksToCreate;
@@ -12,6 +13,8 @@ public class Block_Spawner : MonoBehaviour {
 	float currentTime = 0f;
 	float distanceScale = 8f;
 	
+	public string helpfulText = "";
+	
 	void Hit() {
 		foreach (Vector3 blockToCreate in blocksToCreate) {
 			generatedBlocks.Add (Build(blockToCreate.x, blockToCreate.y, blockToCreate.z));
@@ -22,6 +25,7 @@ public class Block_Spawner : MonoBehaviour {
 			}
 		}
 		hit = true;
+		PostTextToHelpfulField();
 	}
 	
 	void FixedUpdate() {
@@ -72,5 +76,9 @@ public class Block_Spawner : MonoBehaviour {
 			GetComponent<SpriteRenderer>().color = Color.red;
 			Hit ();
 		}
+	}
+	
+	void PostTextToHelpfulField() {
+		GameObject.FindGameObjectWithTag("Helpful_Text").GetComponent<Text>().text = helpfulText;
 	}
 }
