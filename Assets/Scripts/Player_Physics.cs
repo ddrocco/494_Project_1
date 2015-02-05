@@ -3,6 +3,8 @@ using System.Collections;
 using System;
 
 public class Player_Physics : MonoBehaviour {
+	public AudioClip jumpSound;
+
 	//Variable walking
 	public float vSpeed = 0;
 	public float hSpeed = 0;
@@ -211,6 +213,7 @@ public class Player_Physics : MonoBehaviour {
 		vSpeed = newVSpeed;
 		
 		if (facing == dirState.sideways && startJump == true) {
+			AudioSource.PlayClipAtPoint(jumpSound, Camera.main.transform.position);
 			startJump = false;
 			state = jumpState.jumping;
 			currentJumpTime = 0;

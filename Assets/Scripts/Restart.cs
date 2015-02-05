@@ -7,7 +7,7 @@ public class Restart : MonoBehaviour {
 		Player_Physics.isDead = false;
 		Player_Enemy_Collision.health = 7;
 		if (Input.GetKey(KeyCode.Return)) {
-			Application.LoadLevel("_Level_1");
+			Application.LoadLevel("_Title_Screen");
 		}
 	}
 
