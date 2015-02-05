@@ -230,7 +230,7 @@ public class Player_Physics_Final : MonoBehaviour {
 		if (upPressed) {
 			if (facing == dirState.crouching) {
 				boxCollider.size = new Vector3(colliderSize.x, colliderSize.y, 1f);
-				boxCollider.center = new Vector3(-.03f, .02f, 0);
+				boxCollider.center = new Vector3(0, 0, 0);
 				transform.Translate (Vector3.up * 0.3f);
 			}
 			facing = dirState.upwards;
@@ -240,7 +240,7 @@ public class Player_Physics_Final : MonoBehaviour {
 				facing = dirState.crouching;
 				GetComponent<SpriteRenderer>().sprite = crouch;
 				boxCollider.size = new Vector3(colliderSize.x, colliderSize.y * .6f, 1f);
-				boxCollider.center = new Vector3(-.03f, -.05f, 0);
+				boxCollider.center = new Vector3(0, -.05f, 0);
 				transform.Translate (Vector3.down * 0.3f);
 			}
 		} else {
@@ -248,7 +248,7 @@ public class Player_Physics_Final : MonoBehaviour {
 				facing = dirState.sideways;
 				GetComponent<SpriteRenderer>().sprite = stand;
 				boxCollider.size = new Vector3(colliderSize.x, colliderSize.y, 1f);
-				boxCollider.center = new Vector3(-.03f, .02f, 0);
+				boxCollider.center = new Vector3(0, 0, 0);
 				transform.Translate (Vector3.up * 0.3f);
 			}
 			if (facing == dirState.upwards) {
@@ -533,9 +533,9 @@ public class Player_Physics_Final : MonoBehaviour {
 		}
 		
 		if (xEntryRatio > yEntryRatio) { //y "entered" first
-			Ground ();
 			if (above == true) {
 				//resolve ground collision
+				Ground ();
 				transform.Translate (Vector3.up *
 				                     (topEdge - yLoc + 1.01f * heightOffset));
 			} else {
