@@ -17,13 +17,14 @@ public class Obj_Foe : MonoBehaviour {
 	public GameObject heartPrefab;
 	
 	public int invulnTime = 25;
-	public int timeSinceHit = 0;
+	public int timeSinceHit;
 	public bool invulnerable = false;
 	
 	public Player_Shoot player;
 	
 	public void Awake() {
 		player = FindObjectOfType<Player_Shoot>();
+		timeSinceHit = invulnTime;
 	}
 
 	public void FixedUpdate () {
@@ -41,22 +42,27 @@ public class Obj_Foe : MonoBehaviour {
 		}
 	}
 	
+	public void Maintenance() {
+		FixedUpdate ();
+	}
+	
 	public void HitByArrow() {
 		if (invulnerable == true) {
 			return;
 		}
 		if (--health <= 0) {
-			GameObject heart;
-			heart = Instantiate(heartPrefab,transform.position,Quaternion.identity) as GameObject;
-			Heart_Pickup_Script heartScript = heart.GetComponent<Heart_Pickup_Script>();
-			if (itemDropOnDeath == item.smallHeart) {
-				heartScript.value = 1;
-			} else if (itemDropOnDeath == item.halfHeart) {
-				heartScript.value = 5;
-			} else {
-				heartScript.value = 10;
+			if (heartPrefab != null) {
+				GameObject heart;
+				heart = Instantiate(heartPrefab,transform.position,Quaternion.identity) as GameObject;
+				Heart_Pickup_Script heartScript = heart.GetComponent<Heart_Pickup_Script>();
+				if (itemDropOnDeath == item.smallHeart) {
+					heartScript.value = 1;
+				} else if (itemDropOnDeath == item.halfHeart) {
+					heartScript.value = 5;
+				} else {
+					heartScript.value = 10;
+				}
 			}
-			
 			Destroy (this.gameObject);
 		} else {
 			invulnerable = true;

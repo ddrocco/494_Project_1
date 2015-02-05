@@ -98,7 +98,7 @@ public class Player_Sprite_Control : MonoBehaviour {
 	}
 	
 	public void UpdateSpriteColor () {
-		print ("Squee");
+		//print ("Squee");
 		if (Player_Shoot.hasSuperArrow == false) {
 			duckingPit = wDuckingPit;
 			upwardPit = wUpwardPit;

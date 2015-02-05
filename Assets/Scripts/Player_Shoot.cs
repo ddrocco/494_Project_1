@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class Player_Shoot : MonoBehaviour {
+	public AudioClip shotSound;
+
 	public GameObject arrowPrefab, superArrowPrefab;
 	static public bool shotArrow = false;
 	
@@ -19,6 +21,7 @@ public class Player_Shoot : MonoBehaviour {
 		if (++cooldownTimer >= cooldownWaitTime
 				&& (Input.GetKeyDown ("z") || Input.GetKeyDown (","))) {
 			if (Player_Physics.facing != Player_Physics.dirState.crouching && !shotArrow) {
+				AudioSource.PlayClipAtPoint(shotSound, Camera.main.transform.position);
 				shotArrow = true;
 				cooldownTimer = 0;
 				if (hasSuperArrow == true) {

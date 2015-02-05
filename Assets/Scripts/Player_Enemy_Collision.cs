@@ -23,12 +23,16 @@ public class Player_Enemy_Collision : MonoBehaviour {
 			GetComponentInChildren<SpriteRenderer>().color = Color.white;
 		}
 		if (transform.position.y > Camera.main.transform.position.y) {
-			Camera.main.transform.Translate (new Vector3(0, 0.1f, 0));
+			Camera.main.transform.Translate (new Vector3(0, 0.075f, 0));
 		}
 		
 		Vector3 screenBottomLeft = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0));		
 		if (transform.position.y < screenBottomLeft.y) {
-			Application.LoadLevel("_Finished_Screen");
+			if (Camera_Adjust.mitchellMode == false) {
+				Application.LoadLevel("_Finished_Screen");
+			} else {
+				Camera.main.transform.Translate (new Vector3(0, -0.075f, 0));
+			}
 		}
 	}
 	
@@ -67,10 +71,12 @@ public class Player_Enemy_Collision : MonoBehaviour {
 	public void HitByEnemy() {
 		if (invulnerable == false) {
 			AudioSource.PlayClipAtPoint(hitByEnemy, FindObjectOfType<Camera>().transform.position);
-			--health;
+			if (Camera_Adjust.austinMode == false) {
+				--health;
+				UpdateUI();
+			}
 			invulnerable = true;
 			timeSinceHit = 0;
-			UpdateUI();
 		}
 	}
 	
