@@ -74,7 +74,7 @@ public class Player_Physics_Final : MonoBehaviour {
 	public bool startSideJump = false;
 	public bool grounded = false;
 	public bool underSomething = false;
-	public static int faceDir = 1;
+	public int faceDir = 1;
 			
 	void Start() {
 		boxCollider = GetComponent<BoxCollider>() as BoxCollider;
@@ -138,31 +138,31 @@ public class Player_Physics_Final : MonoBehaviour {
 		RaycastHit hitInfo1, hitInfo2, hitInfo3, hitInfo4;
 		float vDist = .45f;
 		float rLength = .5f;
-		if (faceDir == -1) rLength += .075f;
+//		if (faceDir == -1) rLength += .075f;
 		float lLength = .5f;
-		if (faceDir == 1) lLength += .075f;
+//		if (faceDir == 1) lLength += .075f;
 //		float hDist = 0;
 //		if (faceDir == -1) hDist = .075f;
 		if (facing == dirState.crouching) vDist = .25f;
 //		Debug.DrawRay(transform.position + new Vector3(.4f + hDist, .35f, 0), Vector3.up * .75f);
 //		Debug.DrawRay(transform.position + new Vector3(-.475f + hDist, .35f, 0), Vector3.up * .75f);
 //		Debug.DrawRay(transform.position + new Vector3(hDist, .35f, 0), Vector3.up * .75f);
-		Debug.DrawRay(transform.position + new Vector3(0, vDist, 0), Vector3.right * rLength);
-		Debug.DrawRay(transform.position + new Vector3(0, -vDist, 0), Vector3.right * rLength);
-		Debug.DrawRay(transform.position + new Vector3(0, vDist, 0), Vector3.left * lLength);
-		Debug.DrawRay(transform.position + new Vector3(0, -vDist, 0), Vector3.left * lLength);
+		Debug.DrawRay(transform.position + new Vector3(0, vDist, 0), Vector3.right * rLength * faceDir);
+		Debug.DrawRay(transform.position + new Vector3(0, -vDist, 0), Vector3.right * rLength * faceDir);
+//		Debug.DrawRay(transform.position + new Vector3(0, vDist, 0), Vector3.left * lLength);
+//		Debug.DrawRay(transform.position + new Vector3(0, -vDist, 0), Vector3.left * lLength);
 //		Debug.DrawRay(transform.position, Vector3.down * .75f); 
 		
 		//possibly 3 raycasts, top middle bottom
 		if (Mathf.Abs (hSpeed) > 0 &&
 		    (Physics.Raycast(transform.position + new Vector3(0, vDist, 0),
-		                 Vector3.right, out hitInfo1, rLength) ||
+		                 Vector3.right * faceDir, out hitInfo1, rLength) ||
 			 Physics.Raycast(transform.position + new Vector3(0, -vDist, 0),
-		                Vector3.right, out hitInfo2, rLength) ||
+		                Vector3.right * faceDir, out hitInfo2, rLength) /*||
 			 Physics.Raycast(transform.position + new Vector3(0, vDist, 0),
 		                Vector3.left, out hitInfo3, lLength) ||
 			 Physics.Raycast(transform.position + new Vector3(0, -vDist, 0),
-		                Vector3.left, out hitInfo4, lLength))) {
+		                Vector3.left, out hitInfo4, lLength)*/)) {
 		                print ("rays");
 			if (hitInfo1.collider != null) {
 				if (hitInfo1.collider.gameObject.layer == Layerdefs.blockThick) {
@@ -184,7 +184,7 @@ public class Player_Physics_Final : MonoBehaviour {
 					BlockCollision(hitInfo2.collider, thinBlock:true);
 					print ("2b");	
 				}
-			} else if (hitInfo3.collider != null) {
+			} /*else if (hitInfo3.collider != null) {
 			    if (hitInfo3.collider.gameObject.layer == Layerdefs.blockThick){
 					BlockCollision(hitInfo3.collider);
 					print ("3");
@@ -204,7 +204,7 @@ public class Player_Physics_Final : MonoBehaviour {
 					BlockCollision(hitInfo4.collider, thinBlock:true);
 					print ("4b");
 				}
-			}
+			}*/
 		}
 	}
 
@@ -555,11 +555,11 @@ public class Player_Physics_Final : MonoBehaviour {
 			if (right == true) {
 				//resolve collision at Pit's left
 				transform.Translate (Vector3.right *
-				                     (rightEdge - xLoc + 1.01f * widthOffset));
+				                     (rightEdge - xLoc + 1.1f * widthOffset));
 			} else {
 				//resolve collision at Pit's right
 				transform.Translate (Vector3.right *
-				                     (leftEdge - xLoc - 1.01f * widthOffset));
+				                     (leftEdge - xLoc - 1.1f * widthOffset));
 			}
 		} else
 			Ground ();
