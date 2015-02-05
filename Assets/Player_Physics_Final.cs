@@ -240,7 +240,8 @@ public class Player_Physics_Final : MonoBehaviour {
 				facing = dirState.crouching;
 				GetComponent<SpriteRenderer>().sprite = crouch;
 				boxCollider.size = new Vector3(colliderSize.x, colliderSize.y * .6f, 1f);
-				boxCollider.center = new Vector3(0, -.05f, 0);
+//				boxCollider.center = new Vector3(0, -.05f, 0);
+				boxCollider.center = new Vector3(0, 0, 0);
 				transform.Translate (Vector3.down * 0.3f);
 			}
 		} else {
