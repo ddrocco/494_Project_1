@@ -75,6 +75,8 @@ public class Player_Physics_Final : MonoBehaviour {
 	public bool grounded = false;
 	public bool underSomething = false;
 	public static int faceDir = 1;
+	
+	public AudioClip jumpSound;
 			
 	void Start() {
 		boxCollider = GetComponent<BoxCollider>() as BoxCollider;
@@ -293,6 +295,7 @@ public class Player_Physics_Final : MonoBehaviour {
 			jState = jumpState.fastJumping;
 			grounded = false;
 			currentJumpTime = 0;
+			AudioSource.PlayClipAtPoint(jumpSound, Camera.main.transform.position);
 		}
 
 	

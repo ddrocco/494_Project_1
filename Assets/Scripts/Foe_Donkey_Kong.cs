@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Foe_Donkey_Kong : Obj_Foe {
-	public AudioClip brickCrush;
+	public GameObject deadDankyKang;
+	public AudioClip brickCrush, hitSound, dieSound;
 	public Sprite dk_dancing, dk_throwing, dk_standing;
 	public GameObject barrelPrefab;
 
@@ -122,6 +123,7 @@ public class Foe_Donkey_Kong : Obj_Foe {
 	}
 	
 	void OnTriggerEnter(Collider other) {
+		AudioSource.PlayClipAtPoint(hitSound, Camera.main.transform.position);
 		CollisionTrigger(other);
 		if (other.gameObject.layer == Layerdefs.projectile) {
 			other.gameObject.GetComponent<Arrow_Action_Super>().keyIsHeld = false;
@@ -155,6 +157,7 @@ public class Foe_Donkey_Kong : Obj_Foe {
 			}
 		}
 		FindObjectOfType<Camera_Adjust>().gameObject.audio.Stop();
-		Application.LoadLevel("_Victory_Screen");
+		Instantiate(deadDankyKang, transform.position, Quaternion.identity);
+		AudioSource.PlayClipAtPoint(dieSound, Camera.main.transform.position);
 	}
 }
