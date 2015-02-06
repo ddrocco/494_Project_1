@@ -13,8 +13,8 @@ public class Player_Physics_Final : MonoBehaviour {
 	public float hMaxSpeed = 0.15f;
 	public float hSpeed = 0f;
 	public float hStartSpeed = .08f;
-	public float hAirMaxSpeed = .07f;
-	public float hAirStartSpeed = .04f;
+	public float hAirMaxSpeed = .065f;
+	public float hAirStartSpeed = .03f;
 	public int walkTime = 0;
 	public int walkStartTime = 4;
 	public int walkStopTime = 7;
@@ -293,26 +293,31 @@ public class Player_Physics_Final : MonoBehaviour {
 			jState = jumpState.fastJumping;
 			grounded = false;
 			currentJumpTime = 0;
+			jumpSpeed = .22f;
 		}
 
 	
 		if (jState == jumpState.onGround) {
 			vSpeed -= .001f;
 			if (++currentJumpTime >= 15) {
-				//what speed does he begin falling at?
 				jState = jumpState.floatingDown;
-				thisJumpTime = 3;
+				thisJumpTime = 2;
 				currentJumpTime = 0;
 			}
 		} else if (jState == jumpState.fastJumping) {
 			if (facing == dirState.sideways)
 				GetComponent<SpriteRenderer>().sprite = jump;
 			vSpeed = jumpSpeed;
-			if (++currentJumpTime >= jumpTimeMax ||
-			    (currentJumpTime >= jumpTimeMin && !jumpPressed)) {
+			++currentJumpTime;
+			if (currentJumpTime >= jumpTimeMax) {
 				jState = jumpState.midFastJumping;
-				thisJumpTime = currentJumpTime;
+				thisJumpTime = 5;
 				currentJumpTime = 0;
+			} else if (currentJumpTime >= jumpTimeMin && !jumpPressed) {
+				jState = jumpState.midFastJumping;
+				thisJumpTime = 4;
+				currentJumpTime = 0;
+				jumpSpeed = .17f;
 			}
 		} else if (jState == jumpState.midFastJumping) {
 			if (facing == dirState.sideways)
