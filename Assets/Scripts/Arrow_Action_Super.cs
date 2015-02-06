@@ -11,8 +11,10 @@ public class Arrow_Action_Super : MonoBehaviour {
 	float surgeAge = 15f;
 	public float surgeDuration = 1f;
 	bool surging = false;
+	public bool hasCollidedWithEnemy;
 		
 	void Start () {
+		hasCollidedWithEnemy = false;
 		if (Player_Physics_Final.facing == Player_Physics_Final.dirState.upwards) {
 			transform.localScale = new Vector3 (0.25f, 0.75f, 0.25f);
 			move = new Vector3(0, speed, 0);

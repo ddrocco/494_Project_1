@@ -25,8 +25,8 @@ public class Player_Physics_Final : MonoBehaviour {
 	public float vSpeed = 0f;
 	public float jumpSpeed = .22f;
 	public int currentJumpTime = 0;
-	public int jumpTimeMax = 5;
-	public int jumpTimeMin = 3;
+	public int jumpTimeMax = 6;
+	public int jumpTimeMin = 2;
 	public int thisJumpTime = 0;
 	public float groundTime = 4;
 	public float groundTimeMax = 4;
@@ -75,6 +75,8 @@ public class Player_Physics_Final : MonoBehaviour {
 	public bool grounded = false;
 	public bool underSomething = false;
 	public static int faceDir = 1;
+	
+	public AudioClip jumpSound;
 			
 	void Start() {
 		boxCollider = GetComponent<BoxCollider>() as BoxCollider;
@@ -294,6 +296,7 @@ public class Player_Physics_Final : MonoBehaviour {
 			grounded = false;
 			currentJumpTime = 0;
 			jumpSpeed = .22f;
+			AudioSource.PlayClipAtPoint(jumpSound, Camera.main.transform.position);
 		}
 
 	

@@ -32,7 +32,7 @@ public class Player_Enemy_Collision : MonoBehaviour {
 		
 		Vector3 screenBottomLeft = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, 0));		
 		if (transform.position.y < screenBottomLeft.y) {
-			if (Camera_Adjust.mitchellMode == false) {
+			if (Camera_Adjust.mitchellMode == false || health <= 0) {
 				Application.LoadLevel("_Finished_Screen");
 			} else {
 				Camera.main.transform.Translate (new Vector3(0, -0.075f, 0));
