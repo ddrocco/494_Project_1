@@ -9,18 +9,22 @@ public class Player_Enemy_Collision : MonoBehaviour {
 	public static int invulnTime = 50; //2 seconds
 	public static int timeSinceHit = 51;
 	public static bool invulnerable = false;
-	
 	public AudioClip hitByEnemy;
-	
 	public static GameObject healthRenderer;
 	public static GameObject heartsRenderer;
+	public Sprite dead, Gdead;
+	
+	void Update () {
+		if (dead == Gdead) return;
+		if (Player_Shoot.hasSuperArrow) dead = Gdead;
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 		if (invulnerable == true) {
 			UpdateHitControl();
 		} else {	
-			GetComponentInChildren<SpriteRenderer>().color = Color.white;
+			GetComponent<SpriteRenderer>().color = Color.white;
 		}
 		if (transform.position.y > Camera.main.transform.position.y) {
 			Camera.main.transform.Translate (new Vector3(0, 0.075f, 0));
@@ -62,9 +66,9 @@ public class Player_Enemy_Collision : MonoBehaviour {
 		if (++timeSinceHit >= invulnTime) {
 			invulnerable = false;
 		} else if (timeSinceHit % 6 == 4) {
-			GetComponentInChildren<SpriteRenderer>().color = Color.yellow;
+			GetComponent<SpriteRenderer>().color = Color.yellow;
 		} else if (timeSinceHit % 6 == 1) {
-			GetComponentInChildren<SpriteRenderer>().color = Color.red;
+			GetComponent<SpriteRenderer>().color = Color.red;
 		}
 	}
 	
@@ -86,9 +90,8 @@ public class Player_Enemy_Collision : MonoBehaviour {
 			heartsRenderer = GameObject.FindWithTag("Hearts_Renderer");
 		}
 		if (health <= 0) {
-			Player_Physics.isDead = true;
-			GetComponentInChildren<SpriteRenderer>().sprite
-					= GetComponentInChildren<Player_Sprite_Control>().dyingPit;
+			Player_Physics_Final.isDead = true;
+			GetComponent<SpriteRenderer>().sprite = dead;
 		}
 		healthRenderer.GetComponent<Healthbar_Renderer>().SetHealthCount(health);
 		heartsRenderer.GetComponent<Text>().text = toThreeDigits (currency);

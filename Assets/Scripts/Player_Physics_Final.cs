@@ -74,12 +74,11 @@ public class Player_Physics_Final : MonoBehaviour {
 	public bool startSideJump = false;
 	public bool grounded = false;
 	public bool underSomething = false;
-	public int faceDir = 1;
+	public static int faceDir = 1;
 			
 	void Start() {
 		boxCollider = GetComponent<BoxCollider>() as BoxCollider;
 		colliderSize = boxCollider.size;
-		UpdateSpriteColor();
 	}
 
 	void Update() {	
@@ -87,6 +86,7 @@ public class Player_Physics_Final : MonoBehaviour {
 		GetNewKeyPresses();
 		MakeRayCasts();
 		showFace = facing;
+		UpdateSpriteColor();
 	}
 	
 	void FixedUpdate () {
@@ -135,81 +135,40 @@ public class Player_Physics_Final : MonoBehaviour {
 	}
 	
 	void MakeRayCasts() {
-		RaycastHit hitInfo1, hitInfo2, hitInfo3, hitInfo4;
+		RaycastHit hitInfo1, hitInfo2;
 		float vDist = .45f;
 		float rLength = .5f;
-//		if (faceDir == -1) rLength += .075f;
 		float lLength = .5f;
-//		if (faceDir == 1) lLength += .075f;
-//		float hDist = 0;
-//		if (faceDir == -1) hDist = .075f;
 		if (facing == dirState.crouching) vDist = .25f;
-//		Debug.DrawRay(transform.position + new Vector3(.4f + hDist, .35f, 0), Vector3.up * .75f);
-//		Debug.DrawRay(transform.position + new Vector3(-.475f + hDist, .35f, 0), Vector3.up * .75f);
-//		Debug.DrawRay(transform.position + new Vector3(hDist, .35f, 0), Vector3.up * .75f);
-		Debug.DrawRay(transform.position + new Vector3(0, vDist, 0), Vector3.right * rLength * faceDir);
-		Debug.DrawRay(transform.position + new Vector3(0, -vDist, 0), Vector3.right * rLength * faceDir);
-//		Debug.DrawRay(transform.position + new Vector3(0, vDist, 0), Vector3.left * lLength);
-//		Debug.DrawRay(transform.position + new Vector3(0, -vDist, 0), Vector3.left * lLength);
-//		Debug.DrawRay(transform.position, Vector3.down * .75f); 
+		//Debug.DrawRay(transform.position + new Vector3(0, vDist, 0), Vector3.right * rLength * faceDir);
+		//Debug.DrawRay(transform.position + new Vector3(0, -vDist, 0), Vector3.right * rLength * faceDir);
 		
-		//possibly 3 raycasts, top middle bottom
 		if (Mathf.Abs (hSpeed) > 0 &&
 		    (Physics.Raycast(transform.position + new Vector3(0, vDist, 0),
 		                 Vector3.right * faceDir, out hitInfo1, rLength) ||
 			 Physics.Raycast(transform.position + new Vector3(0, -vDist, 0),
-		                Vector3.right * faceDir, out hitInfo2, rLength) /*||
-			 Physics.Raycast(transform.position + new Vector3(0, vDist, 0),
-		                Vector3.left, out hitInfo3, lLength) ||
-			 Physics.Raycast(transform.position + new Vector3(0, -vDist, 0),
-		                Vector3.left, out hitInfo4, lLength)*/)) {
-		                print ("rays");
+		                Vector3.right * faceDir, out hitInfo2, rLength))) {
 			if (hitInfo1.collider != null) {
 				if (hitInfo1.collider.gameObject.layer == Layerdefs.blockThick) {
 					BlockCollision(hitInfo1.collider);
-					print ("1");
 				}
 				else if (hitInfo1.collider.gameObject.layer == Layerdefs.blockThin
 			         	 && facing != dirState.crouching){
 					BlockCollision(hitInfo1.collider, thinBlock:true);
-					print ("1b");	
 				}
 			} else if (hitInfo2.collider != null) {
 			    if (hitInfo2.collider.gameObject.layer == Layerdefs.blockThick){
 					BlockCollision(hitInfo2.collider);
-					print ("2");
 				}
 		        else if (hitInfo2.collider.gameObject.layer == Layerdefs.blockThin
 			         && facing != dirState.crouching){
 					BlockCollision(hitInfo2.collider, thinBlock:true);
-					print ("2b");	
 				}
-			} /*else if (hitInfo3.collider != null) {
-			    if (hitInfo3.collider.gameObject.layer == Layerdefs.blockThick){
-					BlockCollision(hitInfo3.collider);
-					print ("3");
-				}
-			    else if (hitInfo3.collider.gameObject.layer == Layerdefs.blockThin
-			         && facing != dirState.crouching){
-					BlockCollision(hitInfo3.collider, thinBlock:true);
-					print ("3b");
-				}
-			} else if (hitInfo4.collider != null) {
-			    if (hitInfo4.collider.gameObject.layer == Layerdefs.blockThick){
-					BlockCollision(hitInfo4.collider);
-					print ("4");
-				}
-			    else if (hitInfo4.collider.gameObject.layer == Layerdefs.blockThin
-			         && facing != dirState.crouching){
-					BlockCollision(hitInfo4.collider, thinBlock:true);
-					print ("4b");
-				}
-			}*/
+			}
 		}
 	}
 
 	public void UpdateSpriteColor () {
-		//print ("Squee");
 		if (Player_Shoot.hasSuperArrow == false) {
 			duckingPit = crouch;
 			upwardPit = faceUp;
@@ -234,11 +193,11 @@ public class Player_Physics_Final : MonoBehaviour {
 				transform.Translate (Vector3.up * 0.3f);
 			}
 			facing = dirState.upwards;
-			GetComponent<SpriteRenderer>().sprite = faceUp;
+			GetComponent<SpriteRenderer>().sprite = upwardPit;
 		} else if (downPressed) {
 			if (facing != dirState.crouching) {
 				facing = dirState.crouching;
-				GetComponent<SpriteRenderer>().sprite = crouch;
+				GetComponent<SpriteRenderer>().sprite = duckingPit;
 				boxCollider.size = new Vector3(colliderSize.x, colliderSize.y * .6f, 1f);
 //				boxCollider.center = new Vector3(0, -.05f, 0);
 				boxCollider.center = new Vector3(0, 0, 0);
@@ -429,14 +388,6 @@ public class Player_Physics_Final : MonoBehaviour {
 		return;
 	}
 
-/*	float calcHeight(float x) {
-		return -1.465f * Mathf.Pow (10, -14) * Mathf.Pow (x, 5)
-			   - 2.914f * Mathf.Pow (10, -4) * Mathf.Pow (x, 4)
-			   + 5.828f * Mathf.Pow (10, -3) * Mathf.Pow (x, 3)
-			   - 3.721f * Mathf.Pow (10, -1) * Mathf.Pow (x, 2)
-			   + 3.429f * x - 1.049 * Mathf.Pow (10, -2);
-	}*/
-
 	void UpdateVLocation() {
 		if (++ceilingHitTimer < ceilingHitStunTime) {
 			return;
@@ -454,7 +405,7 @@ public class Player_Physics_Final : MonoBehaviour {
 		if (!grounded) {
 			transform.Translate (Vector3.right * hSpeed);
 			if (facing == dirState.upwards)
-				GetComponent<SpriteRenderer>().sprite = faceUp;
+				GetComponent<SpriteRenderer>().sprite = upwardPit;
 		} else {
 			if (currStep == framesPerStep) {
 				transform.Translate (Vector3.right * hSpeed);
@@ -483,8 +434,6 @@ public class Player_Physics_Final : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter (Collider other) {
-		//print ("trigger");
-//		if (ceilingHitTimer < ceilingHitStunTime) return;
 		if (isDead)	return;
 		if (other.gameObject.layer == Layerdefs.blockThick) {
 			BlockCollision (other);
@@ -550,6 +499,12 @@ public class Player_Physics_Final : MonoBehaviour {
 			}
 		} else if (xEntryRatio < yEntryRatio) { //x "entered" first 
 			//print ("such collision");
+			if (!Physics.Raycast(transform.position + new Vector3(0, .45f, 0),
+			                     Vector3.right * faceDir, .5f) &&
+			    !Physics.Raycast(transform.position + new Vector3(0, -.45f, 0),
+			                 Vector3.right * faceDir, .5f)) {
+				return;
+			}
 			if (other.gameObject.layer == Layerdefs.blockThin)
 				return;
 			if (right == true) {

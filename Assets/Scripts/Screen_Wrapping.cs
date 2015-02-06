@@ -32,6 +32,7 @@ public class Screen_Wrapping : MonoBehaviour {
 			ghosts[i] = Instantiate (transform, Vector3.zero, Quaternion.identity) as Transform;
 			DestroyImmediate(ghosts[i].GetComponent<Screen_Wrapping>());
 			DestroyImmediate(ghosts[i].GetComponent<Player_Shoot>());
+			DestroyImmediate(ghosts[i].GetComponent<Player_Enemy_Collision>());
 		}
 	}
 	
