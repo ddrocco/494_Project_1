@@ -38,7 +38,7 @@ public class Generate_L1 : MonoBehaviour {
 		world.Add(new Vector16(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1));
 		world.Add(new Vector16(1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1));
 		world.Add(new Vector16(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1));
-		world.Add(new Vector16(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1));
+		world.Add(new Vector16(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1));
 		world.Add(new Vector16(1, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0,11, 1));
 		world.Add(new Vector16(1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
 		world.Add(new Vector16(1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));

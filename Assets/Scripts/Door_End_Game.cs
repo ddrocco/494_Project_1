@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Door_End_Game : MonoBehaviour {
-	public GameObject player;
-	
+public class Door_End_Game : MonoBehaviour {	
 	void OnTriggerEnter(Collider other) {
-		Application.LoadLevel("_Level_1");
+		if (other.gameObject.layer == Layerdefs.pit) {
+			Application.LoadLevel("_Victory_Screen");
+		}
 	}
 	
 }

@@ -68,7 +68,6 @@ public class Player_Sprite_Control : MonoBehaviour {
 			
 			if (Player_Physics.jumpPressed == true && Player_Physics.state == Player_Physics.jumpState.jumping) {
 				currentSprite = jump1;
-				print ("uhh:)");
 			} else {
 				currentSprite = jump2;
 			}
