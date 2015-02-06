@@ -13,11 +13,11 @@ public class Arrow_Action_Super : MonoBehaviour {
 	bool surging = false;
 		
 	void Start () {
-		if (Player_Physics.facing == Player_Physics.dirState.upwards) {
+		if (Player_Physics_Final.facing == Player_Physics_Final.dirState.upwards) {
 			transform.localScale = new Vector3 (0.25f, 0.75f, 0.25f);
 			move = new Vector3(0, speed, 0);
 		}
-		else if (Player_Physics.isLookingRight == true) {
+		else if (Player_Physics_Final.faceDir == 1) {
 			move = new Vector3(speed, 0, 0);
 		}
 		else {
@@ -76,11 +76,11 @@ public class Arrow_Action_Super : MonoBehaviour {
 		transform.localScale = new Vector3 (0.25f, 0.75f, 0.25f);
 		move = new Vector3(0, speed, 0);
 		gameObject.layer = Layerdefs.projectile;
-		if (Player_Physics.facing == Player_Physics.dirState.upwards) {
+		if (Player_Physics_Final.facing == Player_Physics_Final.dirState.upwards) {
 			transform.rotation = Quaternion.Euler(90f * Vector3.up);
-		} else if (Player_Physics.facing == Player_Physics.dirState.crouching) {
+		} else if (Player_Physics_Final.facing == Player_Physics_Final.dirState.crouching) {
 			transform.rotation = Quaternion.Euler(90f * Vector3.up + 180f * Vector3.back);
-		} else if (Player_Physics.isLookingRight == true) {
+		} else if (Player_Physics_Final.faceDir == 1) {
 			transform.rotation = Quaternion.Euler(90f * Vector3.back);
 		} else {
 			transform.rotation = Quaternion.Euler(90f * Vector3.forward);

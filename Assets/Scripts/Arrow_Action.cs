@@ -8,11 +8,11 @@ public class Arrow_Action : MonoBehaviour {
 	public Vector3 move;
 
 	void Start () {
-		if (Player_Physics.facing == Player_Physics.dirState.upwards) {
+		if (Player_Physics_Final.facing == Player_Physics_Final.dirState.upwards) {
 			transform.localScale = new Vector3 (0.25f, 0.75f, 0.25f);
 			move = new Vector3(0, speed, 0);
 		}
-		else if (Player_Physics.isLookingRight == true) {
+		else if (Player_Physics_Final.faceDir == 1) {
 			move = new Vector3(speed, 0, 0);
 		}
 		else {
